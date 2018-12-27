@@ -39,13 +39,28 @@ class m181227_145926_comments extends Migration
         return false;
     }
 
-    /*
+
     // Use up()/down() to run migration code without a transaction.
     public function up()
     {
-
+        $this->execute("
+        CREATE TABLE IF NOT EXISTS `comments` (
+              `id` INT NOT NULL AUTO_INCREMENT,
+              `content` TEXT NOT NULL,
+              `created_by` INT NOT NULL,
+              `updated_by` INT NOT NULL,
+              `relatedTo` VARCHAR(500) NULL,
+              `status` SMALLINT(6) NULL,
+              `created_at` INT NULL,
+              `updated_at` INT NULL,
+              `entity` CHAR(10) NULL,
+              `entityId` INT NULL,
+              PRIMARY KEY (`id`))
+            ENGINE = InnoDB 
+        ");
     }
 
+    /*
     public function down()
     {
         echo "m181227_145926_comments cannot be reverted.\n";

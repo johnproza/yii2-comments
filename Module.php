@@ -11,9 +11,8 @@ class Module extends \yii\base\Module
     /**
      * @inheritdoc
      */
-    public $defaultRoute = 'default';
+    public $defaultRoute = 'items';
     public $controllerNamespace = 'oboom\comments\controllers';
-
     public $mainLayout = '@oboom/comments/views/layouts/main.php';
 
 }

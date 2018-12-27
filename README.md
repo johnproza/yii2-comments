@@ -25,7 +25,19 @@ to the require section of your `composer.json` file.
 Usage
 -----
 
-Once the extension is installed, simply use it in your code by  :
-
+Before using you must prepare database
 ```php
-<?= \oboom\comments\AutoloadExample::widget(); ?>```
+php yii migrate --migrationPath=@vendor/johnproza/yii2-comments/migrations 
+```
+
+Module setup
+------------
+
+Insert info your config file
+```php
+'modules' => [
+    'comment' => [
+        'class' => 'oboom\comments\Module',
+    ],
+]
+```

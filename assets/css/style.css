@@ -1,0 +1,19 @@
+.comment th {
+  text-align: center;
+}
+.comment th.w50 {
+  width: 50px;
+}
+.comment th.w400 {
+  width: 400px;
+}
+.comment th.left {
+  text-align: left;
+}
+.comment td {
+  text-align: center;
+}
+.comment td.left {
+  text-align: left;
+}
+/*# sourceMappingURL=style.css.map */
