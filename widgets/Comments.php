@@ -7,11 +7,15 @@
  */
 
 namespace oboom\comments\widgets;
+use Yii;
 use yii\base\Widget;
 use yii\helpers\Html;
+use yii\helpers\Json;
+
 
 class Comments extends Widget
 {
+
     /*
      *      $template -> path to your template | default 'menu' | yii2-menu/widgets/views/menu.php
      *      $data -> values from DataBase
@@ -23,16 +27,18 @@ class Comments extends Widget
     public $relatedTo = null;
     public $entity = null;
     public $entityId = null;
-//    public $className;
-//    public $type="horizontal-menu";
-//    public $menuId;
+    public $view = null;
+    protected $encryptedEntity = null;
+    public $template = 'list';
+
 
     public function init(){
         parent::init();
         if ($this->model!=null && $this->relatedTo!=null){
             $this->entity = hash('crc32', get_class($this->model));
             $this->entityId = $this->model->id;
-            var_dump($this->entity,$this->entityId);
+            $this->encryptedEntity = $this->encrypted();
+            //var_dump($this->encryptedEntity);
         }
         else {
 
@@ -40,15 +46,44 @@ class Comments extends Widget
         }
     }
 
-    public function run(){
-        //var_dump(hash('crc32', get_class($this->model)));
-//        if ($this->menuId!='' && $this->menuId!==null){
-//            return $this->render($this->template,
-//                    ['type'=>$this->type,
-//                     'className'=>$this->className?' '.$this->className:'',
-//                     'data'=>$this->data]);
-//        }
 
+
+    public function run(){
+        $commentClass = Yii::$app->getModule('comments')->commentModelClass;
+        $commentModel = Yii::createObject([
+            'class' => $commentClass,
+            'entity' => $this->entity,
+            'entityId' => $this->entityId,
+        ]);
+
+        $this->getCommentDataProvider(null);
+
+
+
+
+         return $this->render($this->template,
+                    ['encryptedEntity'=>$this->encryptedEntity,
+                     'model'=>$commentModel,
+                     'items'=>$this->getCommentDataProvider(null)]);
+        }
+
+    public function encrypted() {
+        $data = Json::encode([
+            'entity' => $this->entity,
+            'entityId' => $this->entityId,
+            'relatedTo' => $this->relatedTo,
+        ]);
+        $key = Yii::$app->getModule('comments')->id;
+        return utf8_encode(Yii::$app->security->encryptByKey($data,$key)); //Yii::$app->getModule('')->id
     }
 
+    protected function getCommentDataProvider($commentClass=null)
+    {
+//        $dataProvider = new ArrayDataProvider($this->dataProviderConfig);
+//        if (!isset($this->dataProviderConfig['allModels'])) {
+//            $dataProvider->allModels = $commentClass::getTree($this->entity, $this->entityId, $this->maxLevel);
+//        }
+//        return $dataProvider;
+        return \oboom\comments\models\Comments::getComments($this->entity,$this->entityId);
+    }
 }

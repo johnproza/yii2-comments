@@ -14,5 +14,8 @@ return [
     'tableUpdate' => 'Дата обновления',
     'tableStatus' => 'Состояние',
     'tableCreateBy' => 'Создано',
-    'tableUpdateBy' => 'Обновлено'
+    'tableUpdateBy' => 'Обновлено',
+
+    'add a comment...'=>'Добавить комментарий...',
+    'comment'=>'Оставить комментарий'
 ];

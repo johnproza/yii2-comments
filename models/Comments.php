@@ -3,6 +3,7 @@
 namespace oboom\comments\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "comments".
@@ -20,12 +21,23 @@ use Yii;
  */
 class Comments extends \yii\db\ActiveRecord
 {
+
+    CONST STATUS_BLOCKED = 0;
+    CONST STATUS_ACTIVE = 1;
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
         return 'comments';
+    }
+
+
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+        ];
     }
 
     /**
@@ -39,6 +51,9 @@ class Comments extends \yii\db\ActiveRecord
             [['created_by', 'updated_by', 'status', 'created_at', 'updated_at', 'entityId'], 'integer'],
             [['relatedTo'], 'string', 'max' => 500],
             [['entity'], 'string', 'max' => 10],
+
+            ['status', 'default', 'value' => self::STATUS_ACTIVE],
+            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_BLOCKED]],
         ];
     }
 
@@ -59,5 +74,10 @@ class Comments extends \yii\db\ActiveRecord
             'entity' => 'Entity',
             'entityId' => 'Entity ID',
         ];
+    }
+ 
+
+    static public function getComments($entity,$entityId){
+        return Comments::findAll(['entity'=>$entity,'entityId'=>$entityId]);
     }
 }

@@ -14,5 +14,8 @@ return [
     'tableUpdate' => 'Update date',
     'tableStatus' => 'Status',
     'tableCreateBy' => 'Created by',
-    'tableUpdateBy' => 'Updated by'
+    'tableUpdateBy' => 'Updated by',
+
+    'add a comment...'=>'Add a comment...',
+    'comment'=>'Comment'
 ];
