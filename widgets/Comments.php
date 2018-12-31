@@ -29,7 +29,7 @@ class Comments extends Widget
     public $entityId = null;
     public $view = null;
     protected $encryptedEntity = null;
-    public $template = 'list';
+    public $template = 'index';
 
 
     public function init(){

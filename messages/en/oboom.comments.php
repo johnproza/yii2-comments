@@ -17,5 +17,6 @@ return [
     'tableUpdateBy' => 'Updated by',
 
     'add a comment...'=>'Add a comment...',
-    'comment'=>'Comment'
+    'comment'=>'Comment',
+    'сomment'=>'Comments'
 ];

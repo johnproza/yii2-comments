@@ -23,3 +23,46 @@
     }
   }
 }
+
+.commentsList {
+  h2 {
+    font-family: 'verdana';
+    font-size: 20px;
+    color: #000;
+    margin: 15px 0px;
+    padding-bottom: 20px;
+    border-bottom: 1px dashed #dfdfdf;
+  }
+
+  .itemComment {
+    margin-bottom: 20px;
+    display: flex;
+
+    .user {
+      width: 60px;
+      height: 60px;
+      border: 1px solid #d0d0d0;
+      flex: 1 0 60px;
+      margin-right: 20px;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+
+    .message {
+      display: flex;
+      width: 100%;
+      padding-top: 10px;
+      flex-flow: column wrap;
+
+      .systemCommnet {
+        display: flex;
+        width: 100%;
+        flex-flow: row wrap;
+        justify-content: space-between;
+      }
+    }
+
+
+  }
+
+}

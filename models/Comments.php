@@ -4,6 +4,7 @@ namespace oboom\comments\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\web\User;
 
 /**
  * This is the model class for table "comments".
@@ -79,5 +80,37 @@ class Comments extends \yii\db\ActiveRecord
 
     static public function getComments($entity,$entityId){
         return Comments::findAll(['entity'=>$entity,'entityId'=>$entityId]);
+    }
+
+    public function getAuthorName()
+    {
+        if ($this->author->hasMethod('getUsername')) {
+            return $this->author->getUsername();
+        }
+        return $this->author->username;
+    }
+
+    public function getPostedDate()
+    {
+        return Yii::$app->formatter->asRelativeTime($this->created_at);
+    }
+
+    public function getContent()
+    {
+        return nl2br($this->content);
+    }
+
+    public function getAvatar()
+    {
+        if ($this->author->hasMethod('getAvatar')) {
+            return $this->author->getAvatar();
+        }
+        return 'http://www.gravatar.com/avatar?d=mm&f=y&s=60';
+    }
+
+
+    public function getAuthor()
+    {
+        return $this->hasOne(Yii::$app->getModule('comments')->userIdentityClass, ['id' => 'created_by']);
     }
 }

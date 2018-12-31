@@ -59,6 +59,8 @@ BaseAssetsBundle::register($this);
                             <?=Yii::$app->formatter->asDatetime($item->updated_at, 'Y-m-d H:i:s');?>
                         <td>
                             <?=Yii::$app->getUser($item->created_by)->identity->username;?>
+                            <?=$item['createdBy']->username;?>
+
                         </td>
 
                         <td>
