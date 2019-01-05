@@ -1,0 +1,25 @@
+{
+  "name": "elements_comments",
+  "version": "1.0.0",
+  "description": "some elements for view in the comments",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnproza/yii2-comments.git"
+  },
+  "keywords": [
+    "react",
+    "comments",
+    "vote",
+    "yii2-comments"
+  ],
+  "author": "Ivan Proza",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/johnproza/yii2-comments/issues"
+  },
+  "homepage": "https://github.com/johnproza/yii2-comments#readme"
+}

@@ -18,5 +18,6 @@ return [
 
     'add a comment...'=>'Add a comment...',
     'comment'=>'Comment',
-    'сomment'=>'Comments'
+    'сomments'=>'Comments',
+    'auth'=>'auth',
 ];

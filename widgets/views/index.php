@@ -17,29 +17,17 @@ BaseAssetsBundle::register($this);
 ?>
 
 <div class="row commentsList">
-    <?php Pjax::begin(['enablePushState' => false, 'timeout' => 20000, 'id' => 'comments']); ?>
+    <?php Pjax::begin(['enablePushState' => false, 'timeout' => 60000, 'id' => 'comments']); ?>
     <div class="col-md-12">
         <h2><?=Yii::t('oboom.comments', 'сomments');?></h2>
         <?if (!is_null($items)): ?>
             <?foreach ($items as $item):?>
-                <div class="itemComment" data-id="<?=$item->id;?>">
-                    <div class="user">
-                        <?php echo Html::img($item->getAvatar(), ['alt' => $item->getAuthorName()]); ?>
-                    </div>
-                    <div class="message">
-                        <div class="systemCommnet">
-                            <div class="authorInfo">
-                                <?=$item->getAuthorName();?>
-                                <?=$item->getPostedDate();?>
-                            </div>
-                            <div class="like">
-                                <a href="#">like</a>
-                                <a href="#">dislike</a>
-                            </div>
-                        </div>
-                        <?=$item->getContent();?>
-                    </div>
-                </div>
+                <?=$this->render('_item',['item'=>$item['parent'],'className'=>'parent']);?>
+                <?if(count($item['child'])>0) :?>
+                    <?foreach ($item['child'] as $child):?>
+                        <?=$this->render('_item',['item'=>$child,'className'=>'child']);?>
+                    <?endforeach;?>
+                <?endif;?>
             <?endforeach;?>
         <?endif;?>
     </div>
@@ -62,10 +50,15 @@ BaseAssetsBundle::register($this);
 //        ]); ?>
 
     <div class="col-md-12">
+        <?php if (Yii::$app->user->isGuest) : ?>
+            <p><?=Yii::t('oboom.comments', 'auth');?></p>
+        <?php endif; ?>
+    </div>
+
+    <div class="col-md-12">
         <?php if (!Yii::$app->user->isGuest) : ?>
             <?php echo $this->render('_form', [
                 'model' => $model,
-                //'formId' => $formId,
                 'encryptedEntity' => $encryptedEntity,
             ]); ?>
         <?php endif; ?>

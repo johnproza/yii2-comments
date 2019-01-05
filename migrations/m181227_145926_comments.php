@@ -24,6 +24,9 @@ class m181227_145926_comments extends Migration
               `updated_at` INT NULL,
               `entity` CHAR(10) NULL,
               `entityId` INT NULL,
+              `like` SMALLINT NULL,
+              `dislike` SMALLINT NULL,
+              `parent` INT NULL DEFAULT 0,
               PRIMARY KEY (`id`))
             ENGINE = InnoDB 
         ");
@@ -55,6 +58,9 @@ class m181227_145926_comments extends Migration
               `updated_at` INT NULL,
               `entity` CHAR(10) NULL,
               `entityId` INT NULL,
+              `like` SMALLINT NULL,
+              `dislike` SMALLINT NULL,
+              `parent` INT NULL DEFAULT 0,
               PRIMARY KEY (`id`))
             ENGINE = InnoDB 
         ");

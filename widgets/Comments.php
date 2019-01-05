@@ -38,7 +38,6 @@ class Comments extends Widget
             $this->entity = hash('crc32', get_class($this->model));
             $this->entityId = $this->model->id;
             $this->encryptedEntity = $this->encrypted();
-            //var_dump($this->encryptedEntity);
         }
         else {
 
@@ -58,13 +57,10 @@ class Comments extends Widget
 
         $this->getCommentDataProvider(null);
 
-
-
-
          return $this->render($this->template,
                     ['encryptedEntity'=>$this->encryptedEntity,
                      'model'=>$commentModel,
-                     'items'=>$this->getCommentDataProvider(null)]);
+                     'items'=>$this->getCommentDataProvider(\oboom\comments\models\Comments::className())]);
         }
 
     public function encrypted() {
@@ -84,6 +80,6 @@ class Comments extends Widget
 //            $dataProvider->allModels = $commentClass::getTree($this->entity, $this->entityId, $this->maxLevel);
 //        }
 //        return $dataProvider;
-        return \oboom\comments\models\Comments::getComments($this->entity,$this->entityId);
+        return \oboom\comments\models\Comments::getTree($this->entity,$this->entityId,0);
     }
 }

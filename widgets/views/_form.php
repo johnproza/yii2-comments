@@ -7,7 +7,7 @@ use yii\widgets\ActiveForm;
 <div class="comment-form-container">
     <?php $form = ActiveForm::begin([
         'options' => [
-            //'id' => $formId,
+            'id' => 'comment-form',
             'class' => 'comment-box',
         ],
         'action' => Url::to(['/comments/default/test', 'entity' => $encryptedEntity]),
@@ -24,5 +24,4 @@ use yii\widgets\ActiveForm;
 <!--        </div>-->
     </div>
     <?php $form->end(); ?>
-    <div class="clearfix"></div>
 </div>

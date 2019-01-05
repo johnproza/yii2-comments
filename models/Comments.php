@@ -38,6 +38,8 @@ class Comments extends \yii\db\ActiveRecord
     {
         return [
             TimestampBehavior::className(),
+
+
         ];
     }
 
@@ -78,9 +80,9 @@ class Comments extends \yii\db\ActiveRecord
     }
  
 
-    static public function getComments($entity,$entityId){
-        return Comments::findAll(['entity'=>$entity,'entityId'=>$entityId]);
-    }
+//    static public function getComments($entity,$entityId){
+//        return $this->getTree($entity,$entityId,0);
+//    }
 
     public function getAuthorName()
     {
@@ -102,12 +104,22 @@ class Comments extends \yii\db\ActiveRecord
 
     public function getAvatar()
     {
+
         if ($this->author->hasMethod('getAvatar')) {
             return $this->author->getAvatar();
         }
         return 'http://www.gravatar.com/avatar?d=mm&f=y&s=60';
     }
 
+    static public function getTree($entity,$entityId,$parent){
+        $query = Comments::findAll(['entity'=>$entity,'entityId'=>$entityId,'parent'=>$parent]);
+        $tree = [];
+        foreach ($query as $data) {
+            $tree[] = ['parent' => $data , 'child'=> Comments::findAll(['entity'=>$entity,'entityId'=>$entityId,'parent'=>$data->id]) ];
+        }
+
+        return $tree;
+    }
 
     public function getAuthor()
     {
