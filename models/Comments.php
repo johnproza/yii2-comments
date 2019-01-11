@@ -4,7 +4,7 @@ namespace oboom\comments\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
-use yii\web\User;
+//use yii\web\User;
 
 /**
  * This is the model class for table "comments".
@@ -111,18 +111,39 @@ class Comments extends \yii\db\ActiveRecord
         return 'http://www.gravatar.com/avatar?d=mm&f=y&s=60';
     }
 
-    static public function getTree($entity,$entityId,$parent){
-        $query = Comments::findAll(['entity'=>$entity,'entityId'=>$entityId,'parent'=>$parent]);
-        $tree = [];
-        foreach ($query as $data) {
-            $tree[] = ['parent' => $data , 'child'=> Comments::findAll(['entity'=>$entity,'entityId'=>$entityId,'parent'=>$data->id]) ];
+    static public function getTree($entity,$entityId,$parent,$limit=null){
+        if(is_null($limit)){
+            $query = Comments::find()->where(['entity'=>$entity,'entityId'=>$entityId,'parent'=>$parent])->orderBy(['created_at' => SORT_DESC])->all();
+        }
+        else {
+            $query = Comments::find()->where(['entity'=>$entity,'entityId'=>$entityId,'parent'=>$parent])->orderBy(['created_at' => SORT_DESC])->limit($limit)->all();
         }
 
+        $tree = [];
+        foreach ($query as $data) {
+            $tree[] = ['parent' => $data , 'child'=> Comments::find()->where(['entity'=>$entity,'entityId'=>$entityId,'parent'=>$data->id])->orderBy(['created_at' => SORT_DESC])->limit(3)->all() ];
+        }
         return $tree;
+    }
+
+
+    static public function getTop($entity=null,$entityId=null,$parent=null){
+        //var_dump($entity);
+        //$query = Comments::find()->where(["id"=>28])->orderBy(['like' => SORT_DESC])->one();
+        $query = Comments::find()->where(['entity'=>$entity,'entityId'=>$entityId])->orderBy(['like' => SORT_DESC])->one();
+        if($query->parent!=0){
+            $parent = Comments::find()->where(['id'=> $query->parent])->one();
+
+        }
+        return [
+            'parent'=>$parent,
+            'top'=>$query
+        ];
     }
 
     public function getAuthor()
     {
-        return $this->hasOne(Yii::$app->getModule('comments')->userIdentityClass, ['id' => 'created_by']);
+        return $this->hasOne(User::className(), ['user.id' => 'created_by']);
+
     }
 }

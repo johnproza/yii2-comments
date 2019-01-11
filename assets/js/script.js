@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $('#comments .icon.like, #comments .icon.dislike').click(function () {
-        console.log($(this).attr('data-type'));
+        console.log($(this).attr('data-tydepe'));
     })
 
 

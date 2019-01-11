@@ -17,8 +17,8 @@ class BaseAssetsBundle extends AssetBundle
         'css/ionicons.min.css'
     ];
     public $js = [
-        'js/script.js'
-        //'js/comment.js'
+        //'js/script.js',
+        'js/main.bundle.js'
     ];
 
     public $depends = [

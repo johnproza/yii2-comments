@@ -100,4 +100,44 @@
 
   }
 
+
+  #topComments {
+    //border: 1px solid green;
+    //padding: 20px;
+    //margin-bottom: 20px;
+  }
+
+  #allComments {
+    .showAllComments {
+      margin: 20px 0px;
+      padding: 10px 5px;
+      text-align: center;
+      background: #337ab7;
+      color: #fff;
+      cursor: pointer;
+      &:hover {
+        background: #286090;
+      }
+    }
+  }
+
+  .topComment {
+    border-bottom: 1px solid green;
+    padding: 0px;
+    margin-bottom: 20px;
+
+    .best{
+      position: relative;
+      &:before {
+        content: '';
+        display: inline-block;
+        width: 30px;
+        height: 36px;
+        background: url(../images/best.svg);
+        position: absolute;
+        right: 0px;
+        bottom: -10px;
+      }
+    }
+  }
 }

@@ -49,6 +49,7 @@ class DefaultController extends Controller
     {
         if(Yii::$app->request->isPost && !Yii::$app->user->getIsGuest()){
             $model = new Comments();
+            //var_dump($this->getCommentAttributesFromEntity($entity));
             $model->setAttributes($this->getCommentAttributesFromEntity($entity));
             $model->created_by = Yii::$app->user->identity->getId();
             $model->updated_by = Yii::$app->user->identity->getId();
@@ -95,10 +96,34 @@ class DefaultController extends Controller
 
     }
 
+    public function actionGetTop($entity){
+        if(Yii::$app->request->isGet && !Yii::$app->user->getIsGuest()){
+            $dataEntity = Json::decode($this->getCommentAttributesFromEntity($entity));
+            $data = Comments::getTop($dataEntity['entity'],$dataEntity['entityId'],$dataEntity['relatedTo']);
+            //Comments::getTop('ddd');
+            //var_dump(Json::decode($dataEntity));
+            return $this->asJson([
+                'parent' => $data['parent'],
+                'top' => $data['top'],
+            ]);
+        }
+    }
+
+    public function actionGetAll($entity){
+        if(Yii::$app->request->isGet && !Yii::$app->user->getIsGuest()){
+            $dataEntity = Json::decode($this->getCommentAttributesFromEntity($entity));
+            $data = Comments::getTree($dataEntity['entity'],$dataEntity['entityId'],$dataEntity['relatedTo']);
+            //Comments::getTop('ddd');
+            //var_dump(Json::decode($dataEntity));
+            return $this->asJson([
+                'data' => $data
+            ]);
+        }
+    }
 
     protected function getCommentAttributesFromEntity($entity)
     {
-        $decryptEntity = Yii::$app->getSecurity()->decryptByKey(utf8_decode($entity), Yii::$app->getModule('comments')->id);
+        return $decryptEntity = Yii::$app->getSecurity()->decryptByKey(base64_decode($entity), Yii::$app->getModule('comments')->id);
         if (false !== $decryptEntity) {
             return Json::decode($decryptEntity);
         }

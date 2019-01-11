@@ -27,9 +27,15 @@ class Comments extends Widget
     public $relatedTo = null;
     public $entity = null;
     public $entityId = null;
-    public $view = null;
+    public $params = [
+        'view'=>null,
+        'template' => 'index',
+        'showTop' => true,
+        'limit'=>10,
+    ];
+
     protected $encryptedEntity = null;
-    public $template = 'index';
+
 
 
     public function init(){
@@ -38,6 +44,8 @@ class Comments extends Widget
             $this->entity = hash('crc32', get_class($this->model));
             $this->entityId = $this->model->id;
             $this->encryptedEntity = $this->encrypted();
+
+            //var_dump($this->encryptedEntity);
         }
         else {
 
@@ -57,10 +65,12 @@ class Comments extends Widget
 
         $this->getCommentDataProvider(null);
 
-         return $this->render($this->template,
+         return $this->render($this->params['template'],
                     ['encryptedEntity'=>$this->encryptedEntity,
                      'model'=>$commentModel,
-                     'items'=>$this->getCommentDataProvider(\oboom\comments\models\Comments::className())]);
+                     'items'=>$this->getCommentDataProvider(\oboom\comments\models\Comments::className()),
+                     'top'=>$this->params['showTop'] ? $this->getTopComments(\oboom\comments\models\Comments::className()) : null
+                    ]);
         }
 
     public function encrypted() {
@@ -70,16 +80,16 @@ class Comments extends Widget
             'relatedTo' => $this->relatedTo,
         ]);
         $key = Yii::$app->getModule('comments')->id;
-        return utf8_encode(Yii::$app->security->encryptByKey($data,$key)); //Yii::$app->getModule('')->id
+        return base64_encode(Yii::$app->security->encryptByKey($data,$key)); //Yii::$app->getModule('')->id
     }
 
     protected function getCommentDataProvider($commentClass=null)
     {
-//        $dataProvider = new ArrayDataProvider($this->dataProviderConfig);
-//        if (!isset($this->dataProviderConfig['allModels'])) {
-//            $dataProvider->allModels = $commentClass::getTree($this->entity, $this->entityId, $this->maxLevel);
-//        }
-//        return $dataProvider;
-        return \oboom\comments\models\Comments::getTree($this->entity,$this->entityId,0);
+        return \oboom\comments\models\Comments::getTree($this->entity,$this->entityId,0,$this->params['limit']);
+    }
+
+    protected function getTopComments($commentClass=null)
+    {
+        return \oboom\comments\models\Comments::getTop($this->entity,$this->entityId);
     }
 }
