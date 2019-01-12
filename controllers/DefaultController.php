@@ -96,25 +96,84 @@ class DefaultController extends Controller
 
     }
 
+    //react
+
     public function actionGetTop($entity){
-        if(Yii::$app->request->isGet && !Yii::$app->user->getIsGuest()){
-            $dataEntity = Json::decode($this->getCommentAttributesFromEntity($entity));
-            $data = Comments::getTop($dataEntity['entity'],$dataEntity['entityId'],$dataEntity['relatedTo']);
-            //Comments::getTop('ddd');
-            //var_dump(Json::decode($dataEntity));
+        $data = $this->actionGetTopData($entity);
+        if($data){
             return $this->asJson([
+                'status' => true,
                 'parent' => $data['parent'],
                 'top' => $data['top'],
+            ]);
+        }
+
+        else {
+            return $this->asJson([
+                'status' => false,
+                'message' => Yii::t('oboom.comments', 'dataError')
+            ]);
+        }
+
+
+    }
+
+
+    protected function actionGetTopData($entity){
+        if(Yii::$app->request->isGet){
+            $dataEntity = Json::decode($this->getCommentAttributesFromEntity($entity));
+            $data = Comments::getTop($dataEntity['entity'],$dataEntity['entityId'],$dataEntity['relatedTo']);
+
+            return $data ? $data : false ;
+        }
+    }
+
+    public function actionCan(){
+        if(!Yii::$app->user->getIsGuest()){
+            return $this->asJson([
+                'can' => true
+            ]);
+        }
+
+        else {
+            return $this->asJson([
+                'can' => false
+            ]);
+        }
+    }
+
+    public function actionVote($id=null,$like=null,$dislike=null){
+        if(!Yii::$app->user->getIsGuest() && Yii::$app->request->isGet){
+            $comment = Comments::findOne(['id'=>$id]);
+            if(!is_null($like) && !is_null($dislike) && $comment){
+                $comment->like =  $like;
+                $comment->dislike =  $dislike;
+                $comment->save();
+                return $this->asJson([
+                    'status'=> true,
+                    'message' => Yii::t('oboom.comments', 'voteLikeAdd')
+                ]);
+            }
+
+            return $this->asJson([
+                'status'=> false,
+                'message' => Yii::t('oboom.comments', 'voteLikeNotAdd')
+            ]);
+        }
+
+        else {
+            return $this->asJson([
+                'status'=> false,
+                'message' => Yii::t('oboom.comments', 'voteLikeNotAdd')
+
             ]);
         }
     }
 
     public function actionGetAll($entity){
-        if(Yii::$app->request->isGet && !Yii::$app->user->getIsGuest()){
+        if(Yii::$app->request->isGet){
             $dataEntity = Json::decode($this->getCommentAttributesFromEntity($entity));
             $data = Comments::getTree($dataEntity['entity'],$dataEntity['entityId'],$dataEntity['relatedTo']);
-            //Comments::getTop('ddd');
-            //var_dump(Json::decode($dataEntity));
             return $this->asJson([
                 'data' => $data
             ]);

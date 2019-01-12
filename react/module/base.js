@@ -4,8 +4,7 @@ import Top from './comment/top';
 import Vote from './vote/index';
 import Ajax from './../module/ajax/index'
 import Item from './comment/item'
-
-
+import Message from './comment/message'
 
 export default class Base extends Component {
 
@@ -14,62 +13,51 @@ export default class Base extends Component {
         this.state = {
             entity:document.getElementById('allComments').getAttribute('data-entity'),
             data:[],
-            vote:true,
+            hideMessage:true,
+            textMessage:'',
             elems:document.getElementsByClassName('vote'),
-            topItemId : 5,
-            showAll:false
+            topItemKey : '',
+            showAll:false,
+            userCan:true
         }
 
     }
 
-
-
-
-
-
     render(){
-        //let elem = document.querySelector(`.parent[data-id="${this.state.topItemId}"]`);
-        //let reactElem = React.createElement(elem.tagName,elem.attributes,elem.children);
+
         return (
 
             <div className="comments">
 
+                {/*{this.state.userCan?*/}
+                    {/*Array.prototype.map.call(*/}
+                        {/*this.state.elems,(elem,i)=>*/}
+                            {/*ReactDOM.createPortal(*/}
+                                {/*<Vote update={this.update}*/}
+                                      {/*userCan={this.state.userCan}*/}
+                                      {/*message={this.message}*/}
+                                      {/*key={++i}/>, elem)*/}
+                {/*): null}*/}
 
-                {Array.prototype.map.call(
-                    this.state.elems,(elem,i)=> ReactDOM.createPortal(<Vote update={this.update} key={++i}/>, elem)
-                )}
-
-                {ReactDOM.createPortal( <Top />, document.getElementById('topComments'))}
+                {/*{ReactDOM.createPortal( <Top />, document.getElementById('topComments'))}*/}
                 {this.state.data.map((item,i)=>
                     <div className="parent" data-id={item.parent.id} key={i}>
-                        <Item data={item.parent} classElem={'itemComment parent'} update={this.update} />
-                        {/*<div className="itemComment parent" data-id={item.parent.id} data-parent={item.parent.parent}>*/}
-                            {/*<div className="user">*/}
-                                {/*<img src="/uploads/logo/52/Qv0a-DR6lwaA.png" alt="testtest" />*/}
-                            {/*</div>*/}
-                            {/*<div className="message">*/}
-                                {/*<div className="systemCommnet">*/}
-                                    {/*<div className="authorInfo">*/}
-                                        {/*<b>{item.parent.created_by}</b><span>{new Date(item.parent.created_at*1000).toLocaleString()}</span>*/}
-                                    {/*</div>*/}
-                                    {/*<div className="like vote" data-id={item.parent.id} data-parent={item.parent.parent} data-like={item.parent.like}*/}
-                                         {/*data-dislike={item.parent.dislike}>*/}
-                                        {/*<Vote update={this.update} />*/}
-
-                                    {/*</div>*/}
-                                {/*</div>*/}
-                                {/*<div className="post">*/}
-                                    {/*{item.parent.content}*/}
-                                {/*</div>*/}
-                            {/*</div>*/}
-                        {/*</div>*/}
+                        <Item data={item.parent}
+                              ajax = {Ajax}
+                              userCan={this.state.userCan}
+                              message={this.message}
+                              classElem={'itemComment parent'}
+                              update={this.update} />
                         {item.child.length!=0 ?
-
-                                item.child.map((child,j)=>
-                                    <Item data={child} classElem={'itemComment child'} update={this.update} />
-                                )
-
-
+                            item.child.map((child,j)=>
+                                <Item data={child}
+                                      ajax = {Ajax}
+                                      userCan={this.state.userCan}
+                                      message={this.message}
+                                      classElem={'itemComment child'}
+                                      key={j}
+                                      update={this.update} />
+                            )
                         :null}
                     </div>
                 )}
@@ -79,45 +67,91 @@ export default class Base extends Component {
                 <div className="showAllComments" onClick={this.getAllData}>
                     Показать все комментарии
                 </div> : null}
+
+                {!this.state.hideMessage ? ReactDOM.createPortal(<Message text={this.state.textMessage} />,document.getElementById('topComments')) : null}
             </div>
         )
     }
 
     componentDidMount(){
-        this.setState({
-            vote:false
+        Ajax({
+            "url":`/comments/default/can`,
+            "method":'GET',
+            "csrf":true,
+        }).then(res =>{
+            this.setState({
+                userCan : res.response.can,
+            })
+            if(NODE_ENV==="development") {
+                console.log('------get all list company data-------',res.response);
+            }
+            return true
+
+        }).then((info)=>{
+            console.log('then 2')
+            return Ajax({
+                "url":`/comments/default/get-top`,
+                "method":'GET',
+                "csrf":true,
+                "headers": 0, //Показать заголовки ответа
+                "data":{entity:this.state.entity}
+            })
+        }).then(res =>{
+            console.log('then top')
+            // this.setState({
+            //     top : [...res.response.data],
+            //     showAll:false
+            // })
+
+            if(NODE_ENV==="development") {
+                console.log('------get all list company data-------',res);
+            }
         })
 
     }
 
+
     getAllData = () =>{
         Ajax({
-            "url":'/comments/default/get-all',
+            "url":`/comments/default/get-all`,
             "method":'GET',
             "csrf":true,
             "headers": 0, //Показать заголовки ответа
             "data":{entity:this.state.entity}
         }).then(res =>{
+
             this.setState({
                 data : [...res.response.data],
                 showAll:false
             })
 
             if(NODE_ENV==="development") {
-                console.log('------get all list company data-------',res.response);
+                console.log('------get all list company data-------',res);
             }
         })
+        this.removeOldData()
     }
 
-    update = (id,like,dislike) => {
 
+
+    message = (m) =>{
         this.setState({
-            topItemId:id,
-            render:false
+            hideMessage:false,
+            textMessage:m
         })
 
-        console.log(this.state.topItemId,'----top id ----', id);
-
+        this.timeOut(3000)
     }
+
+    removeOldData = () =>{
+        document.getElementById('back-render').innerHTML='';
+    }
+
+    timeOut = (delay) =>{
+        setTimeout(()=>{this.setState({hideMessage:true})
+                    },delay)
+    }
+
+
 
 }

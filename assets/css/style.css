@@ -106,4 +106,18 @@
   right: 0px;
   bottom: -10px;
 }
+.commentsList .messageComment {
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  background: #585858;
+  width: 100%;
+  padding: 10px;
+  z-index: 5;
+  text-align: center;
+  color: #fff;
+}
+.commentsList .messageComment.hide {
+  display: none;
+}
 /*# sourceMappingURL=style.css.map */

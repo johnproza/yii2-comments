@@ -27,6 +27,7 @@ class Comments extends Widget
     public $relatedTo = null;
     public $entity = null;
     public $entityId = null;
+    public $react = true;
     public $params = [
         'view'=>null,
         'template' => 'index',
@@ -45,7 +46,14 @@ class Comments extends Widget
             $this->entityId = $this->model->id;
             $this->encryptedEntity = $this->encrypted();
 
-            //var_dump($this->encryptedEntity);
+            if($this->react){
+               $this->params = [
+                   'view'=>null,
+                   'template' => 'react/index',
+                   'showTop' => true,
+                   'limit'=>10,
+               ];
+            }
         }
         else {
 

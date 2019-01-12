@@ -9,30 +9,16 @@ export default class Vote extends Component {
     constructor(props){
         super(props);
         this.state = {
-            id:0, //id элемента
-            like:0,
+            id:this.props.id, //id элемента
+            like:this.props.like,
             containerId:0,
-            dislike:0,
-            status:false
+            dislike:this.props.dislike,
+            //status:false
         }
 
         console.log('www');
     }
 
-    findTop = () => {
-        console.log(this.state.like,this.state.dislike )
-        if((+this.state.like) + (+this.state.dislike) > topCount) {
-            topCount = +this.state.like + +this.state.dislike;
-            topId = this.state.id;
-            this.props.update(topId);
-        }
-
-        {
-            this.state.status ? this.setState({
-                status:false
-            }) : null
-        }
-    }
 
     handleClick = (e) => {
 
@@ -47,16 +33,22 @@ export default class Vote extends Component {
             })
         }
 
-        this.findTop();
+        this.props.update(this.state.id, this.state.like, this.state.dislike);
 
     }
 
+
+    handleMessage = (e) => {
+        this.props.message('Только авторизованные пользователи могут оценивать информацию')
+    }
+
+
     render(){
-        console.log('render');
+        console.log('render --------- vote');
         return (
             <div>
-                <i onClick={this.handleClick} className="icon like ion-md-thumbs-up" data-type="true"><span>{this.state.like}</span></i>
-                <i onClick={this.handleClick} className="icon dislike ion-md-thumbs-down" data-type="true"><span>{this.state.dislike}</span></i>
+                <i onClick={this.props.userCan ? this.handleClick : this.handleMessage} className="icon like ion-md-thumbs-up" data-type="true"><span>{this.state.like}</span></i>
+                <i onClick={this.props.userCan ? this.handleClick : this.handleMessage} className="icon dislike ion-md-thumbs-down" data-type="true"><span>{this.state.dislike}</span></i>
             </div>
         )
     }
@@ -72,8 +64,8 @@ export default class Vote extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if(this.state.status) {
-            this.findTop()
-        }
+        // if(this.state.status) {
+        //     this.findTop()
+        // }
     }
 }

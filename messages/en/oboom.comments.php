@@ -20,4 +20,9 @@ return [
     'comment'=>'Comment',
     'сomments'=>'Comments',
     'auth'=>'auth',
+
+    'voteLikeAdd'=>'Your vote add',
+    'voteLikeNotAdd'=>'Your vote dont add',
+
+    'dataError' => 'failed to get comments. Please, try latter',
 ];

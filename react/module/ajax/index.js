@@ -8,7 +8,7 @@ var promise = (params) => new Promise((resolve, reject) => {
     if (params.csrf === true || params.csrf===undefined ){
         data[csrf.param] = csrf.token;
     }
-    //resolve(Object.assign({"json":params.data},data))
+
     var ajax = $.ajax({
         url: params.url,
         header: params.headers ? params.headers : 0,
