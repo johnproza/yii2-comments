@@ -13,10 +13,12 @@ export default class Base extends Component {
         this.state = {
             entity:document.getElementById('allComments').getAttribute('data-entity'),
             data:[],
+            top:null,
             hideMessage:true,
             textMessage:'',
             elems:document.getElementsByClassName('vote'),
-            topItemKey : '',
+            topItemKey : 'top',
+            topId : 0,
             showAll:false,
             userCan:true
         }
@@ -29,24 +31,17 @@ export default class Base extends Component {
 
             <div className="comments">
 
-                {/*{this.state.userCan?*/}
-                    {/*Array.prototype.map.call(*/}
-                        {/*this.state.elems,(elem,i)=>*/}
-                            {/*ReactDOM.createPortal(*/}
-                                {/*<Vote update={this.update}*/}
-                                      {/*userCan={this.state.userCan}*/}
-                                      {/*message={this.message}*/}
-                                      {/*key={++i}/>, elem)*/}
-                {/*): null}*/}
+                <Top topId={this.state.topItemKey} userCan={this.state.userCan} data={this.state.top} message={this.message}/>
 
                 {/*{ReactDOM.createPortal( <Top />, document.getElementById('topComments'))}*/}
                 {this.state.data.map((item,i)=>
-                    <div className="parent" data-id={item.parent.id} key={i}>
+                    <div className="parent" data-id={item.parent.id} >
                         <Item data={item.parent}
                               ajax = {Ajax}
                               userCan={this.state.userCan}
                               message={this.message}
                               classElem={'itemComment parent'}
+                              key={this.state.topId==parent.id ? this.state.topItemKey : i}
                               update={this.update} />
                         {item.child.length!=0 ?
                             item.child.map((child,j)=>
@@ -55,7 +50,7 @@ export default class Base extends Component {
                                       userCan={this.state.userCan}
                                       message={this.message}
                                       classElem={'itemComment child'}
-                                      key={j}
+                                      key={this.state.topId==child.id ? this.state.topItemKey : j}
                                       update={this.update} />
                             )
                         :null}
@@ -63,7 +58,7 @@ export default class Base extends Component {
                 )}
 
 
-                {!this.state.showAll ?
+                {!this.state.showAll && this.state.top!=null?
                 <div className="showAllComments" onClick={this.getAllData}>
                     Показать все комментарии
                 </div> : null}
@@ -97,11 +92,13 @@ export default class Base extends Component {
                 "data":{entity:this.state.entity}
             })
         }).then(res =>{
-            console.log('then top')
-            // this.setState({
-            //     top : [...res.response.data],
-            //     showAll:false
-            // })
+            if(res.response.status){
+                this.setState({
+                    top : res.response,
+                    topId : res.response.top.id
+                })
+            }
+
 
             if(NODE_ENV==="development") {
                 console.log('------get all list company data-------',res);
@@ -122,14 +119,14 @@ export default class Base extends Component {
 
             this.setState({
                 data : [...res.response.data],
-                showAll:false
+                showAll:true
             })
 
             if(NODE_ENV==="development") {
                 console.log('------get all list company data-------',res);
             }
         })
-        this.removeOldData()
+
     }
 
 
