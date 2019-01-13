@@ -31,7 +31,11 @@ export default class Base extends Component {
 
             <div className="comments">
 
-                <Top topId={this.state.topItemKey} userCan={this.state.userCan} data={this.state.top} message={this.message}/>
+                <Top topId={this.state.topItemKey}
+                     userCan={this.state.userCan}
+                     data={this.state.top}
+                     message={this.message}
+                     submit = {this.submit}/>
 
                 {/*{ReactDOM.createPortal( <Top />, document.getElementById('topComments'))}*/}
                 {this.state.data.map((item,i)=>
@@ -40,6 +44,7 @@ export default class Base extends Component {
                               ajax = {Ajax}
                               userCan={this.state.userCan}
                               message={this.message}
+                              submit = {this.submit}
                               classElem={'itemComment parent'}
                               key={this.state.topId==parent.id ? this.state.topItemKey : i}
                               update={this.update} />
@@ -49,6 +54,7 @@ export default class Base extends Component {
                                       ajax = {Ajax}
                                       userCan={this.state.userCan}
                                       message={this.message}
+                                      submit = {this.submit}
                                       classElem={'itemComment child'}
                                       key={this.state.topId==child.id ? this.state.topItemKey : j}
                                       update={this.update} />
@@ -147,6 +153,31 @@ export default class Base extends Component {
     timeOut = (delay) =>{
         setTimeout(()=>{this.setState({hideMessage:true})
                     },delay)
+    }
+
+    submit = (data,id,parent) =>{
+
+        Ajax({
+            "url":`/comments/default/create`,
+            "method":'POST',
+            "csrf":true,
+            "headers": 0, //Показать заголовки ответа
+            "data":{
+                entity:this.state.entity,
+                content:data,
+                parent:parent!=0 ? parent : id,
+            }
+        }).then(res =>{
+
+            if(res.response.status){
+               this.message(res.response.message);
+            }
+
+            if(NODE_ENV==="development") {
+                console.log('------get all list company data-------',res);
+            }
+        })
+
     }
 
 

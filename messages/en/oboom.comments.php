@@ -25,4 +25,6 @@ return [
     'voteLikeNotAdd'=>'Your vote dont add',
 
     'dataError' => 'failed to get comments. Please, try latter',
+    'commentAdd' => 'Success. Your comment is awaiting moderation',
+    'commentNotAdd' => 'Failed. Your comment could not be posted '
 ];

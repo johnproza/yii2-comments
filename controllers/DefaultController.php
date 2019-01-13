@@ -40,9 +40,32 @@ class DefaultController extends Controller
         ];
     }
 
-    public function actionСreate($entity)
+    public function actionCreate()
     {
-        var_dump($entity);
+        if(Yii::$app->request->isPost && !Yii::$app->user->getIsGuest()){
+            $model = new Comments();
+            $post=$model->load(Yii::$app->request->post(), '');
+            $model->setAttributes(Json::decode($this->getCommentAttributesFromEntity(Yii::$app->request->post('entity'))));
+            $model->created_by = Yii::$app->user->identity->getId();
+            $model->parent = Yii::$app->request->post('parent');
+            $model->content = Yii::$app->request->post('content');
+            $model->updated_by = Yii::$app->user->identity->getId();
+
+            if ($post && $model->save()) {
+                return $this->asJson([
+                    'status' => true,
+                    'message' => Yii::t('oboom.comments', 'commentAdd')
+                ]);
+            }
+        }
+
+
+        return $this->asJson([
+            'status' => false,
+            'message' => Yii::t('oboom.comments', 'commentNotAdd')
+        ]);
+
+
     }
 
     public function actionTest($entity)
@@ -50,7 +73,7 @@ class DefaultController extends Controller
         if(Yii::$app->request->isPost && !Yii::$app->user->getIsGuest()){
             $model = new Comments();
             //var_dump($this->getCommentAttributesFromEntity($entity));
-            $model->setAttributes($this->getCommentAttributesFromEntity($entity));
+            $model->setAttributes(Json::decode($this->getCommentAttributesFromEntity($entity)));
             $model->created_by = Yii::$app->user->identity->getId();
             $model->updated_by = Yii::$app->user->identity->getId();
             //var_dump(Yii::$app->request->getIsAjax());
@@ -155,19 +178,12 @@ class DefaultController extends Controller
                 ]);
             }
 
-            return $this->asJson([
-                'status'=> false,
-                'message' => Yii::t('oboom.comments', 'voteLikeNotAdd')
-            ]);
         }
 
-        else {
-            return $this->asJson([
-                'status'=> false,
-                'message' => Yii::t('oboom.comments', 'voteLikeNotAdd')
-
-            ]);
-        }
+        return $this->asJson([
+            'status'=> false,
+            'message' => Yii::t('oboom.comments', 'voteLikeNotAdd')
+        ]);
     }
 
     public function actionGetAll($entity){

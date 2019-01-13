@@ -9,6 +9,7 @@ export default class Item extends Component {
         super(props);
         this.state = {
             data : this.props.data,
+            showForm : false
         }
     }
 
@@ -23,6 +24,7 @@ export default class Item extends Component {
                     <div className="systemCommnet">
                         <div className="authorInfo">
                             <b>{this.state.data.created_by}</b><span>{new Date(this.state.data.created_at*1000).toLocaleString()}</span>
+                            {this.props.userCan ? <span  className={'answer'} onClick={this.formToggle}>Ответить</span> : null }
                         </div>
                         <div className="like vote" data-id={this.state.data.id} data-parent={this.state.data.parent} data-like={this.state.data.like}
                              data-dislike={this.state.data.dislike}>
@@ -33,13 +35,28 @@ export default class Item extends Component {
                                       userCan={this.props.userCan}
                                       message={this.props.message}
                                 />}
-
                         </div>
                     </div>
                     <div className="post">
                         {this.props.data.content}
                     </div>
                 </div>
+
+                {this.state.showForm ?
+                    <form method={'post'} action={'text'} onSubmit={this.sendForm} name={'addCommentForm'}>
+                        <div className={'addCommentForm'} >
+                            <div className={'col-md-8 col-sm-8 fieldForm'}>
+                                <textarea id={'content'} name={'content'}></textarea>
+                            </div>
+                            <div className={'col-md-4 col-sm-4 fieldButton'}>
+                                <input type={'submit'} name={'submit'} value={'Ответить'} />
+                                <input type={'button'} name={'reset'} value={'Отмена'} onClick={this.formHide} />
+
+                            </div>
+                        </div>
+                    </form>
+
+                    :null}
             </div>
         )
     }
@@ -67,5 +84,30 @@ export default class Item extends Component {
                 console.log('------get all list company data-------',res.response);
             }
         })
+    }
+
+    formToggle = () =>{
+
+        this.setState(()=> {
+            return {showForm:true}
+        })
+    }
+
+    formHide = () =>{
+
+        this.setState(()=> {
+            return {showForm:false}
+        })
+    }
+
+    sendForm =(e)=> {
+        e.preventDefault();
+        let form = new FormData(e.currentTarget); //e.currentTarget
+        let id = e.currentTarget.parentNode.getAttribute('data-id');
+        let parent = e.currentTarget.parentNode.getAttribute('data-parent');
+        if(form.get('content')==0){
+            this.props.message('Форма не может быть пустой')
+        }
+        this.props.submit(form.get('content'),id,parent);
     }
 }

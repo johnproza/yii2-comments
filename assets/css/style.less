@@ -37,12 +37,22 @@
   .itemComment {
     margin-bottom: 20px;
     display: flex;
+    flex-wrap: wrap;
+
+    .answer {
+      display: inline-block;
+      margin: 0px 0px 0px 5px;
+      color: #337ab7;
+      border-bottom: 1px dotted;
+      font-size: 0.9em;
+      cursor: pointer;
+    }
 
     .user {
       width: 60px;
       height: 60px;
       border: 1px solid #d0d0d0;
-      flex: 1 0 60px;
+      flex: 0 0 60px;
       margin-right: 20px;
       border-radius: 50%;
       overflow: hidden;
@@ -59,6 +69,7 @@
       width: 100%;
       padding-top: 10px;
       flex-flow: column wrap;
+      flex: 1 0;
 
       .systemCommnet {
         display: flex;
@@ -92,7 +103,64 @@
           margin-left: 5px;
         }
       }
+
+
     }
+
+    form{
+      flex: 1 0 100%;
+      .addCommentForm {
+        background: #eee;
+        padding: 20px 0;
+        float: left;
+        width: 100%;
+        margin: 0px;
+        margin-top: 20px;
+
+        .fieldForm {
+          textarea {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            max-width: 100%;
+            display: inline-block;
+            vertical-align: top;
+            box-sizing: border-box;
+            text-align: left;
+            resize: none;
+            outline: 0;
+            border: 0px;
+            width: 100%;
+            padding: 10px;
+          }
+        }
+
+        .fieldButton {
+          text-align: right;
+          input {
+            padding: 10px 15px;
+            text-align: center;
+            background: #337ab7;
+            color: #fff;
+            cursor: pointer;
+            border: none;
+            &:hover{
+              background: #286090;
+            }
+
+            &[type="button"] {
+              background: red;
+              &:hover{
+                background: #f54747;
+              }
+            }
+          }
+        }
+      }
+    }
+
 
     &.child {
       margin-left: 70px;

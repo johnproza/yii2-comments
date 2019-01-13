@@ -27,12 +27,21 @@
 .commentsList .itemComment {
   margin-bottom: 20px;
   display: flex;
+  flex-wrap: wrap;
+}
+.commentsList .itemComment .answer {
+  display: inline-block;
+  margin: 0px 0px 0px 5px;
+  color: #337ab7;
+  border-bottom: 1px dotted;
+  font-size: 0.9em;
+  cursor: pointer;
 }
 .commentsList .itemComment .user {
   width: 60px;
   height: 60px;
   border: 1px solid #d0d0d0;
-  flex: 1 0 60px;
+  flex: 0 0 60px;
   margin-right: 20px;
   border-radius: 50%;
   overflow: hidden;
@@ -48,6 +57,7 @@
   width: 100%;
   padding-top: 10px;
   flex-flow: column wrap;
+  flex: 1 0;
 }
 .commentsList .itemComment .message .systemCommnet {
   display: flex;
@@ -73,6 +83,54 @@
   position: relative;
   top: -2px;
   margin-left: 5px;
+}
+.commentsList .itemComment form {
+  flex: 1 0 100%;
+}
+.commentsList .itemComment form .addCommentForm {
+  background: #eee;
+  padding: 20px 0;
+  float: left;
+  width: 100%;
+  margin: 0px;
+  margin-top: 20px;
+}
+.commentsList .itemComment form .addCommentForm .fieldForm textarea {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  max-width: 100%;
+  display: inline-block;
+  vertical-align: top;
+  box-sizing: border-box;
+  text-align: left;
+  resize: none;
+  outline: 0;
+  border: 0px;
+  width: 100%;
+  padding: 10px;
+}
+.commentsList .itemComment form .addCommentForm .fieldButton {
+  text-align: right;
+}
+.commentsList .itemComment form .addCommentForm .fieldButton input {
+  padding: 10px 15px;
+  text-align: center;
+  background: #337ab7;
+  color: #fff;
+  cursor: pointer;
+  border: none;
+}
+.commentsList .itemComment form .addCommentForm .fieldButton input:hover {
+  background: #286090;
+}
+.commentsList .itemComment form .addCommentForm .fieldButton input[type="button"] {
+  background: red;
+}
+.commentsList .itemComment form .addCommentForm .fieldButton input[type="button"]:hover {
+  background: #f54747;
 }
 .commentsList .itemComment.child {
   margin-left: 70px;

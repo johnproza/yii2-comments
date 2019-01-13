@@ -23,14 +23,16 @@ export default class Top extends Component {
 
                 <div className="parent" data-id={this.props.data.parent.id} >
                     <Item data={this.props.data.parent}
-                          userCan={this.state.userCan}
+                          userCan={this.props.userCan}
                           message={this.props.message}
+                          submit = {this.props.submit}
                           classElem={'itemComment parent'}
                           update={this.update} />
                     <div className="children best">
                          <Item data={this.props.data.top}
                           userCan={this.props.userCan}
                           message={this.props.message}
+                          submit = {this.props.submit}
                           classElem={'itemComment child'}
                           update={this.update} key={this.props.topId} />
                     </div>
