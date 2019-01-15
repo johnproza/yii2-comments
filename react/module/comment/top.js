@@ -21,21 +21,22 @@ export default class Top extends Component {
             this.props.data!=null?
             <div className="topComment">
 
-                <div className="parent" data-id={this.props.data.parent.id} >
+                <div className="parent" data-id={this.props.data.parent!=null ? this.props.data.parent.id : null} >
+                    {this.props.data.parent!=null ?
                     <Item data={this.props.data.parent}
                           userCan={this.props.userCan}
                           message={this.props.message}
                           submit = {this.props.submit}
                           form = {false}
                           classElem={'itemComment parent'}
-                          update={this.update} />
-                    <div className="children best">
+                          update={this.update} /> : null}
+                    <div className={this.props.data.parent!=null ? "children best" : "best"} >
                          <Item data={this.props.data.top}
                           userCan={this.props.userCan}
                           message={this.props.message}
                           submit = {this.props.submit}
                           form = {false}
-                          classElem={'itemComment child'}
+                          classElem={this.props.data.parent!=null ? "itemComment child" : "itemComment parentc"}
                           update={this.update} key={this.props.topId} />
                     </div>
                 </div>

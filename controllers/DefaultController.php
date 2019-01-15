@@ -142,11 +142,38 @@ class DefaultController extends Controller
 
     }
 
+    public function actionGetPreview($entity){
+        $data = $this->actionGetTop10($entity,10);
+        if($data){
+            return $this->asJson([
+                'status' => true,
+                'data' => $data
+            ]);
+        }
+
+        else {
+            return $this->asJson([
+                'status' => false,
+                'message' => Yii::t('oboom.comments', 'dataError')
+            ]);
+        }
+
+
+    }
 
     protected function actionGetTopData($entity){
         if(Yii::$app->request->isGet){
             $dataEntity = Json::decode($this->getCommentAttributesFromEntity($entity));
             $data = Comments::getTop($dataEntity['entity'],$dataEntity['entityId'],$dataEntity['relatedTo']);
+
+            return $data ? $data : false ;
+        }
+    }
+
+    protected function actionGetTop10($entity,$limit=10){
+        if(Yii::$app->request->isGet){
+            $dataEntity = Json::decode($this->getCommentAttributesFromEntity($entity));
+            $data = Comments::getTree($dataEntity['entity'],$dataEntity['entityId'],$dataEntity['relatedTo'], $limit);
 
             return $data ? $data : false ;
         }

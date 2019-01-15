@@ -2,6 +2,7 @@ import React,{Component} from "react";
 import ReactDOM from 'react-dom';
 import Vote from '../vote/index';
 import Ajax from "../ajax";
+import Form from "./form";
 
 export default class Item extends Component {
 
@@ -42,21 +43,7 @@ export default class Item extends Component {
                     </div>
                 </div>
 
-                {this.state.showForm ?
-                    <form method={'post'} action={'text'} onSubmit={this.sendForm} name={'addCommentForm'}>
-                        <div className={'addCommentForm'} >
-                            <div className={'col-md-8 col-sm-8 fieldForm'}>
-                                <textarea id={'content'} name={'content'}></textarea>
-                            </div>
-                            <div className={'col-md-4 col-sm-4 fieldButton'}>
-                                <input type={'submit'} name={'submit'} value={'Ответить'} />
-                                <input type={'button'} name={'reset'} value={'Отмена'} onClick={this.formHide} />
-
-                            </div>
-                        </div>
-                    </form>
-
-                    :null}
+                {this.state.showForm ? <Form submit={this.props.submit } hide={this.formHide}/>:null}
             </div>
         )
     }
@@ -114,16 +101,16 @@ export default class Item extends Component {
         })
     }
 
-    sendForm =(e)=> {
-        e.preventDefault();
-        let form = new FormData(e.currentTarget); //e.currentTarget
-        let id = e.currentTarget.parentNode.getAttribute('data-id');
-        let parent = e.currentTarget.parentNode.getAttribute('data-parent');
-        if(form.get('content')==0){
-            this.props.message('Форма не может быть пустой')
-        }
-        console.log(this.props.submit(form.get('content'),id,parent))
-    }
+    // sendForm =(e)=> {
+    //     e.preventDefault();
+    //     let form = new FormData(e.currentTarget); //e.currentTarget
+    //     let id = e.currentTarget.parentNode.getAttribute('data-id');
+    //     let parent = e.currentTarget.parentNode.getAttribute('data-parent');
+    //     if(form.get('content')==0){
+    //         this.props.message('Форма не может быть пустой')
+    //     }
+    //     console.log(this.props.submit(form.get('content'),id,parent))
+    // }
 
 
 }

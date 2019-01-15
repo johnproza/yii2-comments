@@ -6,6 +6,7 @@ import Ajax from './../module/ajax/index'
 import Item from './comment/item'
 import Message from './comment/message'
 import Preloader from './comment/preloader'
+import Form from './comment/form'
 
 export default class Base extends Component {
 
@@ -21,6 +22,7 @@ export default class Base extends Component {
             elems:document.getElementsByClassName('vote'),
             topItemKey : 'top',
             topId : 0,
+            previewData:null,
             showAll:false,
             userCan:true,
             preloader:true
@@ -29,7 +31,8 @@ export default class Base extends Component {
     }
 
     render(){
-
+        const data = this.state.data.length!=0 ? this.state.data : this.state.previewData;
+        console.log('--------- rende data const --------',data)
         return (
 
             <div className="comments">
@@ -40,10 +43,12 @@ export default class Base extends Component {
                          userCan={this.state.userCan}
                          data={this.state.top}
                          message={this.message}
-                         submit = {this.submit}/>
+                         submit = {this.submit} />
+
+
 
                     {/*{ReactDOM.createPortal( <Top />, document.getElementById('topComments'))}*/}
-                    {this.state.data.map((item,i)=>
+                    {data!=null ? data.map((item,i)=>
                         <div className="parent" data-id={item.parent.id} >
                             <Item data={item.parent}
                                   ajax = {Ajax}
@@ -71,13 +76,18 @@ export default class Base extends Component {
                             :null}
                             {/*{this.state.hideAll && item.child.length!=0 ? <div onClick={this.showMore}>{'Показать больше'}</div> :null}*/}
                         </div>
-                    )}
+                    ):null}
 
 
                     {!this.state.showAll && this.state.top!=null?
                     <div className="showAllComments" onClick={this.getAllData}>
                         Показать все комментарии
                     </div> : null}
+
+                    {this.state.userCan ?
+                        <div className={'itemComment'} data-id={0} data-parent={0}>
+                            <Form submit={this.submit}/>
+                        </div> : null }
 
                     {!this.state.hideMessage ? ReactDOM.createPortal(<Message text={this.state.textMessage} />,document.getElementById('topComments')) : null}
                     </div>
@@ -99,6 +109,8 @@ export default class Base extends Component {
             if(NODE_ENV==="development") {
                 console.log('------get all list company data-------',res.response);
             }
+
+            console.log('then 1')
             return true
 
         }).then((info)=>{
@@ -111,11 +123,13 @@ export default class Base extends Component {
                 "data":{entity:this.state.entity}
             })
         }).then(res =>{
-            if(res.response.status){
+
+            console.log('then 3')
+            if(res.response.status && res.response.top!=null){
                 this.setState({
                     top : res.response,
                     topId : res.response.top.id,
-                    preloader:false,
+                    //preloader:false,
                 })
             }
 
@@ -123,6 +137,24 @@ export default class Base extends Component {
             if(NODE_ENV==="development") {
                 console.log('------get all list company data-------',res);
             }
+
+            return Ajax({
+                "url":`/comments/default/get-preview`,
+                "method":'GET',
+                "csrf":true,
+                "headers": 0, //Показать заголовки ответа
+                "data":{entity:this.state.entity}
+            })
+        }).then((res)=>{
+            console.log('then 4',res)
+
+            if(res.response.status && res.response.data!=null){
+                this.setState({
+                    previewData : res.response.data
+                })
+            }
+
+            this.changePreloader();
         })
 
     }

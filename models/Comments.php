@@ -133,7 +133,9 @@ class Comments extends \yii\db\ActiveRecord
         $query = Comments::find()->where(['entity'=>$entity,'entityId'=>$entityId])->orderBy(['like' => SORT_DESC])->one();
         if($query->parent!=0){
             $parent = Comments::find()->where(['id'=> $query->parent])->one();
-
+        }
+        else {
+            $parent=null;
         }
         return [
             'parent'=>$parent,
