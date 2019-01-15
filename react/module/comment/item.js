@@ -9,7 +9,7 @@ export default class Item extends Component {
         super(props);
         this.state = {
             data : this.props.data,
-            showForm : false
+            showForm : this.props.form,
         }
     }
 
@@ -61,6 +61,19 @@ export default class Item extends Component {
         )
     }
 
+
+    // componentWillReceiveProps(prevProps, prevState) {
+    //     console.log('componentDidUpdate')
+    //         //if(prevState.)
+    //         this.setState({showForm: this.props.form});
+    //
+    //     // if(prevProps.someValue!==this.props.someValue){
+    //     //     //Perform some operation here
+    //     //     this.setState({someState: someValue});
+    //     //     this.classMethod();
+    //     // }
+    // }
+
     updateItem = (id,like,dislike) =>{
         Ajax({
             "url":`/comments/default/vote`,
@@ -79,6 +92,7 @@ export default class Item extends Component {
                 this.props.message(res.response.message)
             }
 
+            console.log('------data-------',id,like,dislike);
 
             if(NODE_ENV==="development") {
                 console.log('------get all list company data-------',res.response);
@@ -108,6 +122,8 @@ export default class Item extends Component {
         if(form.get('content')==0){
             this.props.message('Форма не может быть пустой')
         }
-        this.props.submit(form.get('content'),id,parent);
+        console.log(this.props.submit(form.get('content'),id,parent))
     }
+
+
 }

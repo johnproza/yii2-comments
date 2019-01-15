@@ -7,6 +7,7 @@
  */
 
 namespace oboom\comments\controllers;
+use oboom\comments\models\CommentsVote;
 use Yii;
 use yii\web\Controller;
 use yii\helpers\Json;
@@ -167,16 +168,23 @@ class DefaultController extends Controller
 
     public function actionVote($id=null,$like=null,$dislike=null){
         if(!Yii::$app->user->getIsGuest() && Yii::$app->request->isGet){
-            $comment = Comments::findOne(['id'=>$id]);
-            if(!is_null($like) && !is_null($dislike) && $comment){
-                $comment->like =  $like;
-                $comment->dislike =  $dislike;
-                $comment->save();
-                return $this->asJson([
-                    'status'=> true,
-                    'message' => Yii::t('oboom.comments', 'voteLikeAdd')
-                ]);
+
+            if(!empty($like) && $this->setCheckVote(1,$id)){
+                return $this->setVote(1,$id,$like);
             }
+
+            elseif (!empty($dislike) && $this->setCheckVote(0,$id)) {
+                return $this->setVote(0,$id,$dislike);
+            }
+
+            return $this->asJson([
+                'status'=> false,
+                'like'=>$like,
+                'dislike'=>$dislike,
+                'model1' =>CommentsVote::findOne(['comments_id'=>$id,'user'=>Yii::$app->user->getId(),'vote_type'=>1]),
+                'model0' =>CommentsVote::findOne(['comments_id'=>$id,'user'=>Yii::$app->user->getId(),'vote_type'=>0]),
+                'message' => Yii::t('oboom.comments', 'voteLikeNotAdd')
+            ]);
 
         }
 
@@ -203,6 +211,51 @@ class DefaultController extends Controller
             return Json::decode($decryptEntity);
         }
         throw new BadRequestHttpException(Yii::t('yii2mod.comments', 'Oops, something went wrong. Please try again later.'));
+    }
+
+
+
+    protected function setCheckVote($type=0,$commentId=null){
+        return CommentsVote::findOne([  'comments_id'=>$commentId,
+                                        'user'=>Yii::$app->user->getId(),
+                                        'vote_type'=>$type]) ? false : true;
+    }
+
+    protected function setVote($type=0,$commentId=null,$count){
+        $comment = Comments::findOne(['id'=>$commentId]);
+        $commentVote = new CommentsVote();
+        if($type==1){
+            $comment->like =  $count;
+            $commentVote->user = Yii::$app->user->getId();
+            $commentVote->vote_type = $type;
+            $commentVote->comments_id = $commentId;
+        }
+        elseif($type==0) {
+            $comment->dislike =  $count;
+            $commentVote->user = Yii::$app->user->getId();
+            $commentVote->vote_type = $type;
+            $commentVote->comments_id = $commentId;
+        }
+
+        if( $commentVote->save(false) && $comment->save()){
+            return $this->asJson([
+                'status'=> true,
+                'like'=>$count,
+                'model1' =>CommentsVote::findOne(['comments_id'=>$commentId,'user'=>Yii::$app->user->getId(),'vote_type'=>1]),
+                'model0' =>CommentsVote::findOne(['comments_id'=>$commentId,'user'=>Yii::$app->user->getId(),'vote_type'=>0]),
+                'type' =>$type,
+                'message' => Yii::t('oboom.comments', 'voteLikeAdd')
+            ]);
+        }
+
+        return $this->asJson([
+            'status'=> false,
+            'ddd'=>'dddddd',
+            'message' => Yii::t('oboom.comments', 'voteLikeNotAdd')
+        ]);
+
+
+
     }
 
 }

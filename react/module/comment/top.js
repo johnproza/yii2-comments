@@ -26,6 +26,7 @@ export default class Top extends Component {
                           userCan={this.props.userCan}
                           message={this.props.message}
                           submit = {this.props.submit}
+                          form = {false}
                           classElem={'itemComment parent'}
                           update={this.update} />
                     <div className="children best">
@@ -33,6 +34,7 @@ export default class Top extends Component {
                           userCan={this.props.userCan}
                           message={this.props.message}
                           submit = {this.props.submit}
+                          form = {false}
                           classElem={'itemComment child'}
                           update={this.update} key={this.props.topId} />
                     </div>

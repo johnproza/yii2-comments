@@ -26,14 +26,16 @@ export default class Vote extends Component {
             this.setState({
                 like: ++this.state.like
             })
+            this.props.update(this.state.id, this.state.like, null);
         }
         else {
             this.setState({
                 dislike: ++this.state.dislike
             })
+            this.props.update(this.state.id, null ,this.state.dislike);
         }
 
-        this.props.update(this.state.id, this.state.like, this.state.dislike);
+
 
     }
 

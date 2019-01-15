@@ -36,7 +36,7 @@ Module setup
 Insert info your config file
 ```php
 'modules' => [
-    'comment' => [
+    'comments' => [
         'class' => 'oboom\comments\Module',
     ],
 ]

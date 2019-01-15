@@ -121,7 +121,7 @@ class Comments extends \yii\db\ActiveRecord
 
         $tree = [];
         foreach ($query as $data) {
-            $tree[] = ['parent' => $data , 'child'=> Comments::find()->where(['entity'=>$entity,'entityId'=>$entityId,'parent'=>$data->id])->orderBy(['created_at' => SORT_DESC])->limit(3)->all() ];
+            $tree[] = ['parent' => $data , 'child'=> Comments::find()->where(['entity'=>$entity,'entityId'=>$entityId,'parent'=>$data->id])->orderBy(['created_at' => SORT_DESC])->all() ];
         }
         return $tree;
     }
@@ -145,5 +145,11 @@ class Comments extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['user.id' => 'created_by']);
 
+    }
+
+
+    public function getVote()
+    {
+        return $this->hasMany(CommentsVote::className(), ['comments_id' => 'id']);
     }
 }
