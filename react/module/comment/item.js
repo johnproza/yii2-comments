@@ -11,11 +11,13 @@ export default class Item extends Component {
         this.state = {
             data : this.props.data,
             showForm : this.props.form,
+            like:this.props.data.like,
+            dislike:this.props.data.dislike,
         }
     }
 
     render() {
-        //return <this.props.react />
+
         return (
             <div className={this.props.classElem} data-id={this.state.data.id} data-parent={this.state.data.parent}>
                 <div className="user">
@@ -31,10 +33,11 @@ export default class Item extends Component {
                              data-dislike={this.state.data.dislike}>
                             {<Vote update={this.updateItem}
                                       id={this.state.data.id}
-                                      like={this.state.data.like}
-                                      dislike={this.state.data.dislike}
+                                      like={this.state.like}
+                                      dislike={this.state.dislike}
                                       userCan={this.props.userCan}
                                       message={this.props.message}
+                                      vote = {this.props.vote}
                                 />}
                         </div>
                     </div>
@@ -43,25 +46,26 @@ export default class Item extends Component {
                     </div>
                 </div>
 
-                {this.state.showForm ? <Form submit={this.props.submit } hide={this.formHide}/>:null}
+                {this.state.showForm ? <Form submit={this.props.submit } message={this.props.message} hide={this.formHide}/>:null}
             </div>
         )
     }
 
 
-    // componentWillReceiveProps(prevProps, prevState) {
-    //     console.log('componentDidUpdate')
-    //         //if(prevState.)
-    //         this.setState({showForm: this.props.form});
-    //
-    //     // if(prevProps.someValue!==this.props.someValue){
-    //     //     //Perform some operation here
-    //     //     this.setState({someState: someValue});
-    //     //     this.classMethod();
-    //     // }
-    // }
+    componentWillReceiveProps(prevProps, prevState) {
+
+        if(this.props.form!=this.state.showForm){
+            setTimeout(() => {
+                this.setState({
+                    showForm: this.props.form,
+                });
+            },3000)
+
+        }
+    }
 
     updateItem = (id,like,dislike) =>{
+        console.log(id,like,dislike);
         Ajax({
             "url":`/comments/default/vote`,
             "method":'GET',
@@ -73,6 +77,13 @@ export default class Item extends Component {
             }
         }).then(res =>{
             if(res.response.status){
+                like !=null ?
+                this.setState({
+                    like:like,
+                }): this.setState({
+                        like:dislike
+                    })
+
                 this.props.message(res.response.message)
             }
             else {

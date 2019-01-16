@@ -146,6 +146,16 @@
 .commentsList #allComments .showAllComments:hover {
   background: #286090;
 }
+.commentsList #allComments .showAllChild {
+  display: inline-block;
+  padding: 5px 15px;
+  background: #eaeaea;
+  margin: 0 0 20px 71px;
+  cursor: pointer;
+}
+.commentsList #allComments .showAllChild:hover {
+  background: #e5e5e5;
+}
 .commentsList .topComment {
   border-bottom: 1px solid green;
   padding: 0px;

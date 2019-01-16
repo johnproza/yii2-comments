@@ -33,7 +33,7 @@ php yii migrate --migrationPath=@vendor/johnproza/yii2-comments/migrations
 Module setup
 ------------
 
-Insert info your config file
+Insert into your config file
 ```php
 'modules' => [
     'comments' => [

@@ -2,11 +2,12 @@ import React,{Component} from "react";
 import ReactDOM from 'react-dom';
 import Top from './comment/top';
 import Vote from './vote/index';
-import Ajax from './../module/ajax/index'
-import Item from './comment/item'
-import Message from './comment/message'
-import Preloader from './comment/preloader'
-import Form from './comment/form'
+import Ajax from './../module/ajax/index';
+import Child from './comment/child'
+import Item from './comment/item';
+import Message from './comment/message';
+import Preloader from './comment/preloader';
+import Form from './comment/form';
 
 export default class Base extends Component {
 
@@ -17,7 +18,7 @@ export default class Base extends Component {
             data:[],
             top:null,
             hideMessage:true,
-            hideAll : true,
+            totalShow : 3,
             textMessage:'',
             elems:document.getElementsByClassName('vote'),
             topItemKey : 'top',
@@ -36,6 +37,7 @@ export default class Base extends Component {
         return (
 
             <div className="comments">
+                {this.state.previewData == null ? <p>Комментариев пока не найдено</p> : null}
                 {this.state.preloader ? <Preloader /> :
                     <div>
 
@@ -60,19 +62,14 @@ export default class Base extends Component {
                                   key={this.state.topId==parent.id ? this.state.topItemKey : i}
                                   update={this.update} />
                             {item.child.length!=0 ?
-                                item.child.map((child,j)=>
-                                    this.state.hideAll?
-                                    <Item data={child}
-                                          ajax = {Ajax}
-                                          userCan={this.state.userCan}
-                                          message={this.message}
-                                          submit = {this.submit}
-                                          form = {false}
-                                          classElem={'itemComment child'}
-                                          key={this.state.topId==child.id ? this.state.topItemKey : j}
-                                          update={this.update} />:null
-
-                                )
+                                <Child data = {item.child}
+                                       ajax = {Ajax}
+                                       userCan={this.state.userCan}
+                                       message={this.message}
+                                       submit = {this.submit}
+                                       form = {false}
+                                       update={this.update}
+                                />
                             :null}
                             {/*{this.state.hideAll && item.child.length!=0 ? <div onClick={this.showMore}>{'Показать больше'}</div> :null}*/}
                         </div>
@@ -86,7 +83,7 @@ export default class Base extends Component {
 
                     {this.state.userCan ?
                         <div className={'itemComment'} data-id={0} data-parent={0}>
-                            <Form submit={this.submit}/>
+                            <Form submit={this.submit} message={this.message} text = {'Оставить комментарий'} />
                         </div> : null }
 
                     {!this.state.hideMessage ? ReactDOM.createPortal(<Message text={this.state.textMessage} />,document.getElementById('topComments')) : null}
@@ -150,7 +147,7 @@ export default class Base extends Component {
 
             if(res.response.status && res.response.data!=null){
                 this.setState({
-                    previewData : res.response.data
+                    previewData : [...res.response.data]
                 })
             }
 
@@ -237,6 +234,8 @@ export default class Base extends Component {
         })
 
     }
+
+
 
 
 

@@ -14,6 +14,7 @@ export default class Form extends Component {
         //return <this.props.react />
         return (
             <form method={'post'} action={'text'} onSubmit={this.sendForm} name={'addCommentForm'}>
+                {this.props.text != undefined ? <h2>Оставить комментарий</h2> : null}
                 <div className={'addCommentForm'} >
                     <div className={'col-md-8 col-sm-8 fieldForm'}>
                         <textarea id={'content'} name={'content'}></textarea>
@@ -50,8 +51,9 @@ export default class Form extends Component {
         let form = new FormData(e.currentTarget); //e.currentTarget
         let id = e.currentTarget.parentNode.getAttribute('data-id')!=null ? e.currentTarget.parentNode.getAttribute('data-id') : 0;
         let parent = e.currentTarget.parentNode.getAttribute('data-parent')!=0 ? e.currentTarget.parentNode.getAttribute('data-parent') : 0;
-        if(form.get('content')==0){
+        if(form.get('content').length==0){
             this.props.message('Форма не может быть пустой')
+            return false
         }
 
 
