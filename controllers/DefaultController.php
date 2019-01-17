@@ -125,6 +125,8 @@ class DefaultController extends Controller
     public function actionGetTop($entity){
         $data = $this->actionGetTopData($entity);
         if($data){
+
+
             return $this->asJson([
                 'status' => true,
                 'parent' => $data['parent'],

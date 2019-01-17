@@ -22,17 +22,10 @@ export default class Vote extends Component {
     handleClick = (e) => {
 
         if(e.currentTarget.classList.contains('like')){
-            // this.setState({
-            //     like: ++this.state.like
-            // })
+
             this.props.update(this.state.id, +this.state.like+1, null);
-            //this.props.update(this.state.id, ++this.state.like, null);
         }
         else {
-            // this.setState({
-            //     dislike: ++this.state.dislike
-            // })
-            //this.props.update(this.state.id, null ,++this.state.dislike);
             this.props.update(this.state.id, null ,+this.state.dislike+1);
         }
 
@@ -60,8 +53,6 @@ export default class Vote extends Component {
         this.setState({
             containerId: ReactDOM.findDOMNode(this).parentNode,
             id: ReactDOM.findDOMNode(this).parentNode.getAttribute('data-id'),
-            like: ReactDOM.findDOMNode(this).parentNode.getAttribute('data-like') !="" ? ReactDOM.findDOMNode(this).parentNode.getAttribute('data-like') : 0 ,
-            dislike: ReactDOM.findDOMNode(this).parentNode.getAttribute('data-dislike') ? ReactDOM.findDOMNode(this).parentNode.getAttribute('data-dislike') : 0,
             status:true
         });
 
@@ -70,23 +61,21 @@ export default class Vote extends Component {
 
     componentWillReceiveProps(nextProps) {
         // Any time props.email changes, update state.
-        if (nextProps.like != this.props.like) {
-            console.log("like", nextProps.like != this.props.like)
+        if (nextProps.like != this.state.like) {
+            console.log("like", nextProps.like != this.state.like)
+            console.log(nextProps,this.state)
             this.setState({
                 like: nextProps.like
             });
         }
 
-        if (nextProps.dislike != this.props.dislike) {
-            console.log("dislike", nextProps.dislike != this.props.dislike)
+        if (nextProps.dislike != this.state.dislike) {
+            console.log("dislike", nextProps.dislike != this.state.dislike)
+            console.log(nextProps,this.state)
             this.setState({
                 dislike: nextProps.dislike
             });
         }
     }
-
-
-
-
 
 }

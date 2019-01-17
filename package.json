@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "SET \"NODE_ENV=development\" && webpack"
+    "dev": "SET \"NODE_ENV=development\" && webpack",
+    "prod": "SET \"NODE_ENV=production\" && webpack"
   },
   "repository": {
     "type": "git",
@@ -43,5 +44,8 @@
     "react-dom": "^16.6.1",
     "webpack": "^4.28.3",
     "webpack-cli": "^3.2.0"
+  },
+  "devDependencies": {
+    "uglifyjs-webpack-plugin": "^2.1.1"
   }
 }

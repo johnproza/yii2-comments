@@ -1,6 +1,5 @@
 import React,{Component} from "react";
 import Item from "./item";
-import Ajax from "../ajax";
 
 export default class Child extends Component {
 
@@ -23,15 +22,13 @@ export default class Child extends Component {
                 {this.props.data.map((child,j)=>
                 this.state.totalShow > j ?
                     <Item data={child}
-                          ajax = {Ajax}
                           userCan={this.props.userCan}
                           message={this.props.message}
                           submit = {this.props.submit}
                           vote={this.props.vote}
                           form = {false}
                           classElem={'itemComment child'}
-                          // key={this.state.topId==child.id ? this.state.topItemKey : j}
-                          key={j}
+                          key={child.id}
                           update={this.props.update} />:null
 
                 )}
@@ -41,32 +38,11 @@ export default class Child extends Component {
         )
     }
 
-
-    // componentWillReceiveProps(prevProps, prevState) {
-    //
-    //     if(this.props.form!=this.state.showForm){
-    //         setTimeout(() => {
-    //             this.setState({
-    //                 showForm: this.props.form,
-    //             });
-    //         },3000)
-    //
-    //     }
-    // }
-
-
-
     dataToggle = () =>{
-        console.log(222);
         this.setState(()=> {
             return {totalShow:this.props.data.length,
                     showMore : false}
         })
     }
-
-
-
-
-
 
 }

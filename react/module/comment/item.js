@@ -21,12 +21,12 @@ export default class Item extends Component {
         return (
             <div className={this.props.classElem} data-id={this.state.data.id} data-parent={this.state.data.parent}>
                 <div className="user">
-                    <img src="/uploads/logo/52/Qv0a-DR6lwaA.png" alt="testtest" />
+                    <img src={this.state.data.avator} alt="testtest" />
                 </div>
                 <div className="message">
                     <div className="systemCommnet">
                         <div className="authorInfo">
-                            <b>{this.state.data.created_by}</b><span>{new Date(this.state.data.created_at*1000).toLocaleString()}</span>
+                            <b>{this.state.data.author}</b><span>{new Date(this.state.data.created_at*1000).toLocaleString('en-US')}</span>
                             {this.props.userCan ? <span  className={'answer'} onClick={this.formToggle}>Ответить</span> : null }
                         </div>
                         <div className="like vote" data-id={this.state.data.id} data-parent={this.state.data.parent} data-like={this.state.data.like}
@@ -81,7 +81,7 @@ export default class Item extends Component {
                 this.setState({
                     like:like,
                 }): this.setState({
-                        like:dislike
+                        dislike:dislike
                     })
 
                 this.props.message(res.response.message)
@@ -90,10 +90,10 @@ export default class Item extends Component {
                 this.props.message(res.response.message)
             }
 
-            console.log('------data-------',id,like,dislike);
+
 
             if(NODE_ENV==="development") {
-                console.log('------get all list company data-------',res.response);
+                console.log('------like update-------',res.response);
             }
         })
     }
@@ -111,17 +111,6 @@ export default class Item extends Component {
             return {showForm:false}
         })
     }
-
-    // sendForm =(e)=> {
-    //     e.preventDefault();
-    //     let form = new FormData(e.currentTarget); //e.currentTarget
-    //     let id = e.currentTarget.parentNode.getAttribute('data-id');
-    //     let parent = e.currentTarget.parentNode.getAttribute('data-parent');
-    //     if(form.get('content')==0){
-    //         this.props.message('Форма не может быть пустой')
-    //     }
-    //     console.log(this.props.submit(form.get('content'),id,parent))
-    // }
 
 
 }

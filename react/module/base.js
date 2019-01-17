@@ -1,7 +1,6 @@
 import React,{Component} from "react";
 import ReactDOM from 'react-dom';
 import Top from './comment/top';
-import Vote from './vote/index';
 import Ajax from './../module/ajax/index';
 import Child from './comment/child'
 import Item from './comment/item';
@@ -33,7 +32,7 @@ export default class Base extends Component {
 
     render(){
         const data = this.state.data.length!=0 ? this.state.data : this.state.previewData;
-        console.log('--------- rende data const --------',data)
+
         return (
 
             <div className="comments">
@@ -47,9 +46,6 @@ export default class Base extends Component {
                          message={this.message}
                          submit = {this.submit} />
 
-
-
-                    {/*{ReactDOM.createPortal( <Top />, document.getElementById('topComments'))}*/}
                     {data!=null ? data.map((item,i)=>
                         <div className="parent" data-id={item.parent.id} >
                             <Item data={item.parent}
@@ -59,7 +55,7 @@ export default class Base extends Component {
                                   submit = {this.submit}
                                   form = {false}
                                   classElem={'itemComment parent'}
-                                  key={this.state.topId==parent.id ? this.state.topItemKey : i}
+                                  key={item.parent.id}
                                   update={this.update} />
                             {item.child.length!=0 ?
                                 <Child data = {item.child}
@@ -69,6 +65,7 @@ export default class Base extends Component {
                                        submit = {this.submit}
                                        form = {false}
                                        update={this.update}
+                                       key={item.child.id}
                                 />
                             :null}
                             {/*{this.state.hideAll && item.child.length!=0 ? <div onClick={this.showMore}>{'Показать больше'}</div> :null}*/}

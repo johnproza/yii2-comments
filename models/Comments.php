@@ -25,6 +25,7 @@ class Comments extends \yii\db\ActiveRecord
 
     CONST STATUS_BLOCKED = 0;
     CONST STATUS_ACTIVE = 1;
+    public $userInfo =[];
     /**
      * {@inheritdoc}
      */
@@ -32,6 +33,29 @@ class Comments extends \yii\db\ActiveRecord
     {
         return 'comments';
     }
+
+    public function fields()
+    {
+        return ['id',
+                'content',
+                'created_at',
+                'like',
+                'parent',
+                'dislike',
+                'author' => function ($model) {
+                    return $model->author->username;
+                },
+                'authorId' => function ($model) {
+                    return $model->author->id;
+                },
+                'avator' => function ($model) {
+                    return $this->getAvatar();
+                    //return User::getAvatar($model->author->id);
+                },
+        ];
+    }
+
+
 
 
     public function behaviors()
@@ -80,9 +104,7 @@ class Comments extends \yii\db\ActiveRecord
     }
  
 
-//    static public function getComments($entity,$entityId){
-//        return $this->getTree($entity,$entityId,0);
-//    }
+
 
     public function getAuthorName()
     {
@@ -104,7 +126,6 @@ class Comments extends \yii\db\ActiveRecord
 
     public function getAvatar()
     {
-
         if ($this->author->hasMethod('getAvatar')) {
             return $this->author->getAvatar();
         }
@@ -128,9 +149,12 @@ class Comments extends \yii\db\ActiveRecord
 
 
     static public function getTop($entity=null,$entityId=null,$parent=null){
-        //var_dump($entity);
-        //$query = Comments::find()->where(["id"=>28])->orderBy(['like' => SORT_DESC])->one();
+
+
+        //$query = Comments::find()->joinWith('author')->where(['entity'=>$entity,'entityId'=>$entityId])->orderBy(['like' => SORT_DESC])->one();
         $query = Comments::find()->where(['entity'=>$entity,'entityId'=>$entityId])->orderBy(['like' => SORT_DESC])->one();
+        //var_dump($query->author->username);
+
         if($query->parent!=0){
             $parent = Comments::find()->where(['id'=> $query->parent])->one();
         }
@@ -145,7 +169,7 @@ class Comments extends \yii\db\ActiveRecord
 
     public function getAuthor()
     {
-        return $this->hasOne(User::className(), ['user.id' => 'created_by']);
+        return $this->hasOne(Yii::$app->getModule('comments')->userIdentityClass, ['id' => 'created_by']);
 
     }
 
