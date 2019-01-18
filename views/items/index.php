@@ -7,10 +7,10 @@
  */
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
-use oboom\comments\BaseAssetsBundle;
+use oboom\comments\BackEndAssetsBundle;
 use yii\widgets\LinkPager;
 $this->title = \Yii::t('oboom.comments', 'title');
-BaseAssetsBundle::register($this);
+BackEndAssetsBundle::register($this);
 
 ?>
 <div id="app" class="mainSection list">
@@ -37,6 +37,8 @@ BaseAssetsBundle::register($this);
                 <th><?=\Yii::t('oboom.comments', 'tableUpdate');?></th>
                 <th><?=\Yii::t('oboom.comments', 'tableCreateBy');?></th>
                 <th><?=\Yii::t('oboom.comments', 'tableUpdateBy');?></th>
+                <th><?=\Yii::t('oboom.comments', 'like');?></th>
+                <th><?=\Yii::t('oboom.comments', 'dislike');?></th>
                 <th><?=\Yii::t('oboom.comments', 'tableStatus');?></th>
                 <th></th>
             </tr>
@@ -62,6 +64,12 @@ BaseAssetsBundle::register($this);
 
                     <td>
                         <?=$item->author->username;?>
+                    </td>
+                    <td>
+                        <?=$item->like;?>
+                    </td>
+                    <td>
+                        <?=$item->dislike;?>
                     </td>
                     <td class="centerItems">
                         <?if($item->status==1):?>

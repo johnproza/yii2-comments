@@ -51,6 +51,9 @@ class ItemsController extends Controller
     {
 
         $comment = Comments::findOne($id);
+        if($comment->load(Yii::$app->request->post()) && $comment->save()) {
+            return $this->goBack();
+        }
         return $this->render('update', ['item'=>$comment]);
 
     }

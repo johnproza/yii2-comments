@@ -90,6 +90,15 @@
 .commentsList .itemComment .message .post {
   margin-top: 5px;
 }
+.commentsList .itemComment .message .post span.answer {
+  color: #0988c5;
+  border-bottom: 1px dashed;
+  font-style: italic;
+  font-size: 1em;
+  margin: 0px;
+  cursor: default;
+  font-weight: bold;
+}
 .commentsList .itemComment form {
   flex: 1 0 100%;
 }

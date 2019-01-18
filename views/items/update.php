@@ -8,10 +8,10 @@
 use yii\helpers\Html;
 use yii\bootstrap4\ActiveForm;
 use yii\helpers\ArrayHelper;
-use oboom\comments\BaseAssetsBundle;
+use oboom\comments\BackEndAssetsBundle;
 use yii\widgets\LinkPager;
 $this->title = \Yii::t('oboom.comments', 'title');
-BaseAssetsBundle::register($this);
+BackEndAssetsBundle::register($this);
 ?>
 <div id="app" class="mainSection list">
     <div class="col-md-12">

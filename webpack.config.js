@@ -14,7 +14,7 @@ const CONFIG = {
         //publicPath: 'dist/'
     },
 
-    stats: NODE_ENV == 'development' ? "errors-only" :"verbose",
+    //stats: NODE_ENV == 'development' ? false :"verbose",
     mode: NODE_ENV,
     watch: NODE_ENV == 'development',
     watchOptions: {

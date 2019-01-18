@@ -13,6 +13,7 @@ export default class Item extends Component {
             showForm : this.props.form,
             like:this.props.data.like,
             dislike:this.props.data.dislike,
+            userAnswer:null
         }
     }
 
@@ -21,7 +22,7 @@ export default class Item extends Component {
         return (
             <div className={this.props.classElem} data-id={this.state.data.id} data-parent={this.state.data.parent}>
                 <div className="user">
-                    <img src={this.state.data.avator} alt="testtest" />
+                    <img src={this.state.data.avator} alt={this.state.data.author} />
                 </div>
                 <div className="message">
                     <div className="systemCommnet">
@@ -41,12 +42,11 @@ export default class Item extends Component {
                                 />}
                         </div>
                     </div>
-                    <div className="post">
-                        {this.props.data.content}
-                    </div>
+                    <div className="post" dangerouslySetInnerHTML={{__html: this.replaceContent()}} />
+
                 </div>
 
-                {this.state.showForm ? <Form submit={this.props.submit } message={this.props.message} hide={this.formHide}/>:null}
+                {this.state.showForm ? <Form submit={this.props.submit } message={this.props.message} hide={this.formHide} user={this.state.userAnswer}/>:null}
             </div>
         )
     }
@@ -98,10 +98,21 @@ export default class Item extends Component {
         })
     }
 
-    formToggle = () =>{
-
+    formToggle = (e) =>{
+        let user = e.currentTarget.parentNode.children[0].innerHTML;
+        console.log(user)
         this.setState(()=> {
-            return {showForm:true}
+            return {
+                showForm:true,
+                userAnswer:`*${user}*, `
+            }
+        })
+    }
+
+    replaceContent = () =>{
+        return this.props.data.content.replace(/\*\S{1,}\*/gi, function(match,p,d){
+            return "<span class='answer'>"+match.slice(1,match.length-1)+"</span>";
+
         })
     }
 

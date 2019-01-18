@@ -17,7 +17,7 @@ export default class Form extends Component {
                 {this.props.text != undefined ? <h2>Оставить комментарий</h2> : null}
                 <div className={'addCommentForm'} >
                     <div className={'col-md-8 col-sm-8 fieldForm'}>
-                        <textarea id={'content'} name={'content'}></textarea>
+                        <textarea id={'content'} name={'content'} defaultValue={this.props.user!=undefined ? this.props.user : ''}></textarea>
                     </div>
                     <div className={'col-md-4 col-sm-4 fieldButton'}>
                         <input type={'submit'} name={'submit'} value={'Ответить'} />
