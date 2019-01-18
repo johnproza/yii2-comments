@@ -3,6 +3,11 @@ return [
     'title'=>'Список комментариев',
     'id'=>'ID',
     'content'=>'Комментарий',
+    'like'=>'Like',
+    'dislike'=>'Dislike',
+    'status'=>'Статус комментария',
+    'created_by'=>'Создано пользователем',
+    'updated_by'=>'Обновлено пользователем',
 
     'activeStatus'=>'Активно',
     'blockedStatus'=>'Заблокировано',

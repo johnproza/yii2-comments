@@ -75,7 +75,7 @@ class Comments extends \yii\db\ActiveRecord
         return [
             [['content', 'created_by', 'updated_by'], 'required'],
             [['content'], 'string'],
-            [['created_by', 'updated_by', 'status', 'created_at', 'updated_at', 'entityId'], 'integer'],
+            [['created_by', 'updated_by', 'status', 'created_at', 'updated_at', 'entityId','like','dislike'], 'integer'],
             [['relatedTo'], 'string', 'max' => 500],
             [['entity'], 'string', 'max' => 10],
 
@@ -92,12 +92,14 @@ class Comments extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('oboom.comments', 'id'),
             'content' => Yii::t('oboom.comments', 'content'),
-            'created_by' => 'Created By',
-            'updated_by' => 'Updated By',
+            'created_by' => Yii::t('oboom.comments', 'created_by'),
+            'updated_by' => Yii::t('oboom.comments', 'updated_by'),
             'relatedTo' => 'Related To',
-            'status' => 'Status',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'status' => Yii::t('oboom.comments', 'status'),
+            'like' => Yii::t('oboom.comments', 'like'),
+            'dislike' => Yii::t('oboom.comments', 'dislike'),
+            'created_at' => 'Софыв',
+            'updated_at' => 'asda',
             'entity' => 'Entity',
             'entityId' => 'Entity ID',
         ];

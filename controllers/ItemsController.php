@@ -21,15 +21,6 @@ class ItemsController extends Controller
         \yii\helpers\Url::remember();
 
         $query = Comments::find()->all();
-        //var_dump($query);
-
-//        $allCat = Menu::find()->all();
-//        if(is_null($cat) || empty($cat)){
-//            $query = MenuItems::find()->joinWith('menu')->asArray()->all();
-//        }else{
-//            $query = MenuItems::find()->joinWith('menu')->where(["menu_items.menu_id"=>$cat])->asArray()->all();
-//        }
-
         $provider = new ArrayDataProvider([
 
             'allModels'=>$query,
@@ -38,60 +29,29 @@ class ItemsController extends Controller
             ],
             'sort' => [
                 'attributes' => [
-                    'created_at',
+                    'created_at' =>[
+                        'label' => \Yii::t('oboom.comments', 'tableCreate'),
+                    ]
                 ],
-                'defaultOrder' => [ 'created_at'=> SORT_ASC]
+                'defaultOrder' => [ 'created_at'=> SORT_DESC]
             ],
         ]);
 
 
         return $this->render('index',[
             'items'=>$provider->getModels(),
+            'sort'=>$provider->sort,
             'pages'=>$provider->pagination]);
     }
 
 
 
 
-    public function actionCreate()
-    {
-
-        $item = new MenuItems();
-        $seo = new Seo();
-        $menu = Menu::find()->all();
-        $parent = MenuItems::find()->where(['=','parent',0])->all();
-
-        if ($item->load(Yii::$app->request->post()) && $seo->load(Yii::$app->request->post())) {
-            if($seo->save()){
-                $item->seo_id = $seo->id;
-                $item->save();
-                return $this->redirect(Yii::$app->request->referrer ? Yii::$app->request->referrer : Yii::$app->homeUrl);
-            }
-        }
-
-        else{
-            return $this->render('create', ['item'=>$item,'seo'=>$seo, 'menu'=>$menu, 'parent'=>$parent]);
-        }
-    }
-
     public function actionUpdate($id=null)
     {
 
-        $item = MenuItems::find()->where(['=','menu_items.id',$id])->joinWith('seo')->limit(1)->one();
-        $menu = Menu::find()->all();
-        $parent = MenuItems::find()->where(['=','parent',0])->all();
-
-        if ($item->load(Yii::$app->request->post()) &&
-            $item['seo']->load(Yii::$app->request->post())) {
-
-            if ($item->save() && $item['seo']->save()){
-                return $this->goBack((!empty(Yii::$app->request->referrer) ? Yii::$app->request->referrer : null));
-            }
-        }
-
-        else{
-            return $this->render('update', ['item'=>$item, 'menu'=>$menu, 'parent'=>$parent]);
-        }
+        $comment = Comments::findOne($id);
+        return $this->render('update', ['item'=>$comment]);
 
     }
 

@@ -56,8 +56,8 @@ export default class Form extends Component {
             return false
         }
 
+        this.props.submit(form.get('content'),id,parent);
 
-        console.log(this.props.submit(form.get('content'),id,parent))
     }
 
 

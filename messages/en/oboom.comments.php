@@ -3,6 +3,11 @@ return [
     'title'=>'list of comments',
     'id'=>'ID',
     'content'=>'Content',
+    'like'=>'Like',
+    'dislike'=>'Dislike',
+    'status'=>'Comment status',
+    'created_by'=>'Created by',
+    'updated_by'=>'Updated by',
 
     'activeStatus'=>'Active',
     'blockedStatus'=>'Blocked',

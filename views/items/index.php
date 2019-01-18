@@ -33,7 +33,7 @@ BaseAssetsBundle::register($this);
             <tr>
                 <th class="w50">#</th>
                 <th class="w400 left"><?=\Yii::t('oboom.comments', 'tableComment');?></th>
-                <th><?=\Yii::t('oboom.comments', 'tableCreate');?></th>
+                <th><?=$sort->link('created_at')?></th>
                 <th><?=\Yii::t('oboom.comments', 'tableUpdate');?></th>
                 <th><?=\Yii::t('oboom.comments', 'tableCreateBy');?></th>
                 <th><?=\Yii::t('oboom.comments', 'tableUpdateBy');?></th>
@@ -52,10 +52,10 @@ BaseAssetsBundle::register($this);
                     </td>
 
                     <td>
-                        <?=Yii::$app->formatter->asDatetime($item->created_at, 'Y-m-d H:i:s');?>
+                        <?=Yii::$app->formatter->asDatetime($item->created_at, 'yyyy-MM-dd HH:mm');?>
                     </td>
                     <td>
-                        <?=Yii::$app->formatter->asDatetime($item->updated_at, 'Y-m-d H:i:s');?>
+                        <?=Yii::$app->formatter->asDatetime($item->updated_at, 'yyyy-MM-dd HH:mm');?>
                     <td>
                         <?=$item->author->username;?>
                     </td>
