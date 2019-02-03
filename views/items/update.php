@@ -24,9 +24,9 @@ BackEndAssetsBundle::register($this);
     </div>
 
     <div class="col-md-12">
-        <?php $form = ActiveForm::begin(['id' => 'form-comment',
+        <?php $form = ActiveForm::begin(['id' => 'form-gallery',
             'options' => ['class' => 'form']]); ?>
-        <div class="row form-group">
+        <div class="row form-group bg">
 
 
             <div class="col-lg-12 col-md-12">

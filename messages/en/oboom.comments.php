@@ -8,11 +8,16 @@ return [
     'status'=>'Comment status',
     'created_by'=>'Created by',
     'updated_by'=>'Updated by',
+    'expires'=>'Expires Date',
+    'reason'=>'Reason',
+    'user_id'=>'User',
 
     'activeStatus'=>'Active',
     'blockedStatus'=>'Blocked',
 
-    'remove' => 'Remove comment?',
+    'addBan'=>'Add new user',
+
+    'remove' => 'Remove gallery?',
 
     'tableComment' => 'Comment',
     'tableCreate' => 'Create date',
@@ -21,8 +26,8 @@ return [
     'tableCreateBy' => 'Created by',
     'tableUpdateBy' => 'Updated by',
 
-    'add a comment...'=>'Add a comment...',
-    'comment'=>'Comment',
+    'add a gallery...'=>'Add a gallery...',
+    'gallery'=>'Comment',
     'сomments'=>'Comments',
     'auth'=>'auth',
 
@@ -30,6 +35,6 @@ return [
     'voteLikeNotAdd'=>'Your vote dont add',
 
     'dataError' => 'failed to get comments. Please, try latter',
-    'commentAdd' => 'Success. Your comment is awaiting moderation',
-    'commentNotAdd' => 'Failed. Your comment could not be posted '
+    'commentAdd' => 'Success. Your gallery is awaiting moderation',
+    'commentNotAdd' => 'Failed. Your gallery could not be posted '
 ];

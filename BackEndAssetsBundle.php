@@ -17,7 +17,7 @@ class BackEndAssetsBundle extends AssetBundle
         'css/ionicons.min.css'
     ];
     public $js = [
-        //'js/script.js',
+        'js/simple.js',
         //'js/main.bundle.js'
     ];
 

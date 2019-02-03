@@ -4,6 +4,7 @@ namespace oboom\comments\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use oboom\comments\behaviors\PurifyBehavior;
 //use yii\web\User;
 
 /**
@@ -62,7 +63,15 @@ class Comments extends \yii\db\ActiveRecord
     {
         return [
             TimestampBehavior::className(),
-
+            'purify' => [
+                'class' => PurifyBehavior::className(),
+                'attributes' => ['content'],
+                'config' => [
+                    'AutoFormat.Linkify' => true,
+                    'HTML.TargetBlank' => true,
+                    'HTML.Nofollow' => true
+                ]
+            ]
 
         ];
     }

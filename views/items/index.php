@@ -28,7 +28,7 @@ BackEndAssetsBundle::register($this);
     </div>
 
     <div class="col-md-12">
-        <table class="table comment">
+        <table class="table table-bordered table-hover comment">
             <thead>
             <tr>
                 <th class="w50">#</th>

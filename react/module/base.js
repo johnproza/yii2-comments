@@ -24,7 +24,10 @@ export default class Base extends Component {
             topId : 0,
             previewData:null,
             showAll:false,
+
             userCan:true,
+            userCanMessage:'',
+
             preloader:true
         }
 
@@ -81,7 +84,7 @@ export default class Base extends Component {
                     {this.state.userCan ?
                         <div className={'itemComment'} data-id={0} data-parent={0}>
                             <Form submit={this.submit} message={this.message} text = {'Оставить комментарий'} />
-                        </div> : null }
+                        </div> : <div className="alert alert-info" role="alert">{this.state.userCanMessage}</div> }
 
                     {!this.state.hideMessage ? ReactDOM.createPortal(<Message text={this.state.textMessage} />,document.getElementById('topComments')) : null}
                     </div>
@@ -99,6 +102,7 @@ export default class Base extends Component {
         }).then(res =>{
             this.setState({
                 userCan : res.response.can,
+                userCanMessage : res.response.message
             })
             if(NODE_ENV==="development") {
                 console.log('------get all list company data-------',res.response);

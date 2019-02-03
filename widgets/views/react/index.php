@@ -16,12 +16,12 @@ use yii\helpers\Html;
 BaseAssetsBundle::register($this);
 ?>
 
-<div class="row commentsList">
-    <div class="col-md-12">
-        <h2><?=Yii::t('oboom.comments', 'сomments');?></h2>
-        <div id="allComments" data-entity="<?=$encryptedEntity?>"></div>
-        <div id="topComments" data-id="<?=$encryptedEntity;?>"></div>
-    </div>
+<div class="commentsList">
+
+    <h2><?=Yii::t('oboom.comments', 'сomments');?></h2>
+    <div id="allComments" data-entity="<?=$encryptedEntity?>"></div>
+    <div id="topComments" data-id="<?=$encryptedEntity;?>"></div>
+
 
 
 

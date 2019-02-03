@@ -16,6 +16,14 @@
 .comment td.left {
   text-align: left;
 }
+.comment .bg {
+  background: #fff;
+  padding: 20px 0px 0 0;
+}
+.bg {
+  background: #fff;
+  padding: 20px 0px 0 0;
+}
 .commentsList h2 {
   font-family: 'verdana';
   font-size: 20px;

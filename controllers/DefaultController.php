@@ -7,6 +7,7 @@
  */
 
 namespace oboom\comments\controllers;
+use oboom\comments\models\CommentsBan;
 use oboom\comments\models\CommentsVote;
 use Yii;
 use yii\web\Controller;
@@ -14,7 +15,6 @@ use yii\helpers\Json;
 use yii\filters\VerbFilter;
 use yii\filters\ContentNegotiator;
 use oboom\comments\models\Comments;
-use oboom\comments\events\CommentEvent;
 use yii\widgets\ActiveForm;
 
 class DefaultController extends Controller
@@ -95,29 +95,6 @@ class DefaultController extends Controller
         else {
             return false;
         }
-
-//        $model = new Comments();
-//        $model->setAttributes($this->getCommentAttributesFromEntity($entity));
-//        //$event = Yii::createObject(['class' => CommentEvent::class, 'commentModel' => $model]);
-//        $model->created_by = Yii::$app->user->identity->getId();
-//        $model->updated_by = Yii::$app->user->identity->getId();
-//        //var_dump($entity, $this->getCommentAttributesFromEntity($entity));
-//        //var_dump($model->save(false));
-//        $this->trigger(self::EVENT_BEFORE_CREATE, $event);
-//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-//            //$this->trigger(self::EVENT_AFTER_CREATE, $event);
-//            return $this->asJson(['status' => 'success']);
-//
-//        }
-//
-//
-//        return $this->asJson([
-//            'status' => 'error',
-//            'errors' => ActiveForm::validate($model),
-//        ]);
-
-
-
     }
 
     //react
@@ -182,15 +159,27 @@ class DefaultController extends Controller
     }
 
     public function actionCan(){
-        if(!Yii::$app->user->getIsGuest()){
+
+        $ban = CommentsBan::find()->where(['user_id'=>Yii::$app->user->getId()])->limit(1)->one();
+
+        if(!Yii::$app->user->getIsGuest() && is_null($ban) ){
+
             return $this->asJson([
-                'can' => true
+                'can' => true,
+            ]);
+        }
+
+        else if(!is_null($ban)) {
+            return $this->asJson([
+                'can' => false,
+                'message' => $ban->reason
             ]);
         }
 
         else {
             return $this->asJson([
-                'can' => false
+                'can' => false,
+                'message' => "Только зарегистрированные пользователи могут оставлять отзывы"
             ]);
         }
     }
