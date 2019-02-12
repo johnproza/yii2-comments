@@ -13,7 +13,7 @@ use kartik\select2\Select2;
 $this->title = \Yii::t('oboom.comments', 'title');
 BackEndAssetsBundle::register($this);
 ?>
-<div id="app" class="mainSection list">
+<div id="app" class="mainSection row">
     <div class="col-md-12">
         <?php $form = ActiveForm::begin(['id' => 'form-gallery',
             'options' => ['class' => 'form']]); ?>

@@ -13,7 +13,7 @@ use yii\widgets\LinkPager;
 $this->title = \Yii::t('oboom.comments', 'title');
 BackEndAssetsBundle::register($this);
 ?>
-<div id="app" class="mainSection list">
+<div id="app" class="mainSection row">
     <div class="col-md-12">
         <div class="systemBar">
             <div>
