@@ -46,12 +46,14 @@ class Comments extends \yii\db\ActiveRecord
                 'author' => function ($model) {
                     return $model->author->username;
                 },
+                'nickname' => function ($model) {
+                    return $model->author->nickname;
+                },
                 'authorId' => function ($model) {
                     return $model->author->id;
                 },
                 'avator' => function ($model) {
                     return $this->getAvatar();
-                    //return User::getAvatar($model->author->id);
                 },
         ];
     }

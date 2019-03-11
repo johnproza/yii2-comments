@@ -1,6 +1,6 @@
 {
   "name": "elements_comments",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "some elements for view in the comments",
   "main": "index.js",
   "scripts": {

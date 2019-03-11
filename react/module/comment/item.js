@@ -27,7 +27,7 @@ export default class Item extends Component {
                 <div className="message">
                     <div className="systemCommnet">
                         <div className="authorInfo">
-                            <b>{this.state.data.author}</b><span>{new Date(this.state.data.created_at*1000).toLocaleString('en-US')}</span>
+                            <b data-id={this.state.data.id}>{this.state.data.nickname ? this.state.data.nickname : this.state.data.author}</b><span>{new Date(this.state.data.created_at*1000).toLocaleString('ru-RU')}</span>
                             {this.props.userCan ? <span  className={'answer'} onClick={this.formToggle}>Ответить</span> : null }
                         </div>
                         <div className="like vote" data-id={this.state.data.id} data-parent={this.state.data.parent} data-like={this.state.data.like}
